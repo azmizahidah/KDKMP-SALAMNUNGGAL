@@ -2738,6 +2738,243 @@
       color: var(--text-light) !important;
     }
 
+    /* ---------- Analitik penjualan ---------- */
+    #viewAnalytics {
+      --an-bar: #86B6EF;
+      --an-bar-current: #2A78D6;
+      --an-grid: #EEF0F2;
+      --an-axis: #D1D5DB;
+    }
+
+    .an-filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 14px;
+      margin-bottom: 16px;
+    }
+
+    .an-segment {
+      display: inline-flex;
+      background: #ECEDF0;
+      border-radius: 12px;
+      padding: 4px;
+      gap: 2px;
+    }
+
+    .an-seg-btn {
+      background: transparent;
+      border: none;
+      border-radius: 9px;
+      padding: 8px 16px;
+      font: inherit;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .an-seg-btn.active {
+      background: #FFFFFF;
+      color: var(--text-main);
+      box-shadow: 0 1px 3px rgba(17, 24, 39, 0.10);
+    }
+
+    .an-range-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .an-kpi-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .an-kpi {
+      background: var(--bg-card);
+      border: 1px solid var(--excel-border);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-sm);
+      min-width: 0;
+    }
+
+    .an-kpi-label {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .an-kpi-value {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      margin-top: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .an-kpi-sub {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .an-kpi-delta {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 8px;
+    }
+
+    .an-chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .an-chart-card {
+      padding: 18px 18px 10px 18px;
+      overflow: visible;
+    }
+
+    .an-chart-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .an-chart-sub {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .an-plot {
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .an-plot svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .an-grid {
+      stroke: var(--an-grid);
+      stroke-width: 1;
+    }
+
+    .an-axis {
+      stroke: var(--an-axis);
+      stroke-width: 1;
+    }
+
+    .an-tick {
+      font-size: 11px;
+      fill: var(--text-light);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .an-value {
+      font-size: 12px;
+      font-weight: 700;
+      fill: var(--text-main);
+    }
+
+    .an-bar {
+      fill: var(--an-bar);
+      transition: fill 0.12s ease;
+    }
+
+    .an-bar-current {
+      fill: var(--an-bar-current);
+    }
+
+    .an-bar.is-hover {
+      fill: #1C5CAB;
+    }
+
+    .an-hit {
+      fill: transparent;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .an-hit:focus-visible {
+      stroke: var(--an-bar-current);
+      stroke-width: 1.5;
+    }
+
+    .an-tooltip {
+      display: none;
+      position: fixed;
+      z-index: 300;
+      pointer-events: none;
+      background: var(--ink);
+      color: #FFFFFF;
+      border-radius: 10px;
+      padding: 8px 12px;
+      box-shadow: 0 8px 24px rgba(17, 24, 39, 0.25);
+      white-space: nowrap;
+    }
+
+    .an-tip-value {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .an-tip-label {
+      font-size: 11.5px;
+      color: #D1D5DB;
+      margin-top: 1px;
+    }
+
+    .an-table th.num,
+    .an-table td.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .an-table tfoot td {
+      font-weight: 700;
+      border-top: 1px solid var(--excel-border);
+      background: #FAFAFB;
+    }
+
+    @media (max-width: 1100px) {
+      .an-kpi-row {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 899px) {
+      .an-kpi-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .an-chart-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+      }
+
+      .an-export {
+        width: 100%;
+      }
+
+      .mobile-bottom-nav {
+        grid-template-columns: repeat(4, 1fr) !important;
+      }
+    }
+
     /* ---------- Detail kecil ---------- */
     .digit-counter-row {
       display: flex;
@@ -3033,6 +3270,9 @@
       <button type="button" class="sheet-tab" id="tabBtnDb" onclick="switchView('db')">
         Database &amp; Riwayat <span class="tab-count" id="tabDbCount">0</span>
       </button>
+      <button type="button" class="sheet-tab" id="tabBtnAnalytics" onclick="switchView('analytics')">
+        Analitik
+      </button>
     </div>
     <div class="sheet-quick-actions">
       <button type="button" class="btn btn-outline btn-sm" onclick="openCloudModal()">Cloud</button>
@@ -3297,6 +3537,31 @@
       </div>
     </section>
 
+    <!-- ==================== VIEW 3: ANALITIK PENJUALAN ==================== -->
+    <section id="viewAnalytics" style="display:none;">
+      <div class="an-filter-row">
+        <div class="an-segment" role="tablist" aria-label="Periode analitik">
+          <button type="button" class="an-seg-btn active" id="anBtnDay" role="tab" onclick="setAnalyticsPeriod('day')">Harian</button>
+          <button type="button" class="an-seg-btn" id="anBtnWeek" role="tab" onclick="setAnalyticsPeriod('week')">Mingguan</button>
+          <button type="button" class="an-seg-btn" id="anBtnMonth" role="tab" onclick="setAnalyticsPeriod('month')">Bulanan</button>
+        </div>
+        <div class="an-range-label" id="anRangeLabel">-</div>
+        <button type="button" class="btn btn-outline btn-sm an-export" onclick="exportAnalyticsCSV()">Export analitik (.CSV)</button>
+      </div>
+
+      <div class="an-kpi-row" id="anKpiRow"></div>
+
+      <div class="an-chart-grid" id="anChartGrid"></div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Rincian per periode <span class="card-sub" id="anTableSub"></span></div>
+        </div>
+        <div class="card-body" id="anTableContainer"></div>
+      </div>
+
+      <div class="an-tooltip" id="anTooltip" role="status" aria-live="polite"></div>
+    </section>
     <footer id="kdkmpCreditFooter" class="app-credit-bar" aria-label="Kredit Pembuat Aplikasi">
       <span>Dibuat oleh <strong>Azmi Zahidah Mushaffa</strong> • Manager KDKMP Salamnunggal Cibeber</span>
     </footer>
@@ -3311,6 +3576,10 @@
     <button type="button" class="bnav-btn" id="bnavDb" onclick="switchView('db')">
       <span class="bnav-icon">🗂️</span>
       <span>Database</span>
+    </button>
+    <button type="button" class="bnav-btn" id="bnavAnalytics" onclick="switchView('analytics')">
+      <span class="bnav-icon">📊</span>
+      <span>Analitik</span>
     </button>
     <button type="button" class="bnav-btn" onclick="openCloudModal()">
       <span class="bnav-icon">☁️</span>
@@ -7011,21 +7280,360 @@ function jsonOut_(obj) {
        NAVIGATION, FULLSCREEN & UI REFRESH
     ===================================================================== */
     function switchView(viewName) {
-      const isPos = (viewName === 'pos');
-      document.getElementById('viewPos').style.display = isPos ? 'block' : 'none';
-      document.getElementById('viewDb').style.display = isPos ? 'none' : 'block';
+      const views = { pos: ['viewPos', 'tabBtnPos', 'bnavPos'], db: ['viewDb', 'tabBtnDb', 'bnavDb'], analytics: ['viewAnalytics', 'tabBtnAnalytics', 'bnavAnalytics'] };
+      if (!views[viewName]) viewName = 'pos';
+      Object.keys(views).forEach(key => {
+        const [sectionId, tabId, navId] = views[key];
+        const on = key === viewName;
+        document.getElementById(sectionId).style.display = on ? 'block' : 'none';
+        document.getElementById(tabId).classList.toggle('active', on);
+        document.getElementById(navId).classList.toggle('active', on);
+      });
 
-      document.getElementById('tabBtnPos').classList.toggle('active', isPos);
-      document.getElementById('tabBtnDb').classList.toggle('active', !isPos);
-
-      document.getElementById('bnavPos').classList.toggle('active', isPos);
-      document.getElementById('bnavDb').classList.toggle('active', !isPos);
-
-      if (!isPos) {
-        renderDatabaseTab();
-      }
+      if (viewName === 'db') renderDatabaseTab();
+      if (viewName === 'analytics') renderAnalytics();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    /* =====================================================================
+       ANALITIK PENJUALAN (HARIAN / MINGGUAN / BULANAN)
+       Minggu memakai getWeekKey() yang sama dengan kuota Gas, supaya angkanya cocok.
+    ===================================================================== */
+    let analyticsPeriod = 'day';
+    const ANALYTICS_WINDOW = { day: 14, week: 12, month: 12 };
+    const ANALYTICS_NAME = { day: 'hari', week: 'minggu', month: 'bulan' };
+    const MONTH_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+    function parseLocalDate(str) {
+      const [y, m, d] = String(str).split('-').map(Number);
+      return new Date(y, (m || 1) - 1, d || 1);
+    }
+
+    function periodKeyOf(dateStr, period) {
+      if (period === 'week') return getWeekKey(dateStr);
+      if (period === 'month') return String(dateStr).slice(0, 7);
+      return String(dateStr).slice(0, 10);
+    }
+
+    // Rentang tanggal kunci minggu ISO "YYYY-Wnn" dari getWeekKey(): Senin s.d. Minggu.
+    function weekKeyRange(key) {
+      const [y, w] = key.split('-W').map(Number);
+      const jan4 = new Date(y, 0, 4);
+      const mondayWeek1 = new Date(y, 0, 4 - ((jan4.getDay() || 7) - 1));
+      const start = new Date(mondayWeek1.getFullYear(), mondayWeek1.getMonth(), mondayWeek1.getDate() + (w - 1) * 7);
+      const end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6);
+      return { start, end };
+    }
+
+    function periodLabel(key, period, long = false) {
+      if (period === 'day') {
+        const d = parseLocalDate(key);
+        return long ? formatDateIndo(key) : `${d.getDate()} ${MONTH_SHORT[d.getMonth()]}`;
+      }
+      if (period === 'week') {
+        const { start, end } = weekKeyRange(key);
+        const sameMonth = start.getMonth() === end.getMonth();
+        const short = sameMonth
+          ? `${start.getDate()}–${end.getDate()} ${MONTH_SHORT[end.getMonth()]}`
+          : `${start.getDate()} ${MONTH_SHORT[start.getMonth()]}–${end.getDate()} ${MONTH_SHORT[end.getMonth()]}`;
+        return long ? `${short} ${end.getFullYear()}` : short;
+      }
+      const [y, m] = key.split('-').map(Number);
+      return long ? `${MONTH_SHORT[m - 1]} ${y}` : `${MONTH_SHORT[m - 1]} ${String(y).slice(2)}`;
+    }
+
+    // Daftar kunci periode, lama → baru, berakhir di periode yang memuat endDate.
+    function buildPeriodKeys(period, count, endDate) {
+      const keys = [];
+      const cursor = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+      while (keys.length < count) {
+        const ds = formatDateLocal(cursor);
+        const key = periodKeyOf(ds, period);
+        if (keys[keys.length - 1] !== key && !keys.includes(key)) keys.push(key);
+        if (period === 'day') cursor.setDate(cursor.getDate() - 1);
+        else if (period === 'week') cursor.setDate(cursor.getDate() - 1);
+        else cursor.setDate(0); // hari terakhir bulan sebelumnya
+      }
+      return keys.reverse();
+    }
+
+    function aggregateTransactions(period, keys) {
+      const rows = new Map(keys.map(k => [k, { key: k, minyak: 0, gas: 0, beras: 0, tx: 0, people: new Set() }]));
+      transactions.forEach(t => {
+        if (!t || !t.date) return;
+        const row = rows.get(periodKeyOf(t.date, period));
+        if (!row) return;
+        const qty = Number(t.qty || 0);
+        if (t.item === 'minyak' || t.item === 'gas' || t.item === 'beras') row[t.item] += qty;
+        row.tx += 1;
+        row.people.add(t.citizenId || t.kk || t.nik || t.name);
+      });
+      return keys.map(k => {
+        const r = rows.get(k);
+        return { key: r.key, minyak: r.minyak, gas: r.gas, beras: r.beras, tx: r.tx, people: r.people.size, peopleSet: r.people };
+      });
+    }
+
+    function sumRows(rows) {
+      const people = new Set();
+      const total = { minyak: 0, gas: 0, beras: 0, tx: 0 };
+      rows.forEach(r => {
+        total.minyak += r.minyak; total.gas += r.gas; total.beras += r.beras; total.tx += r.tx;
+        r.peopleSet.forEach(p => people.add(p));
+      });
+      total.people = people.size;
+      return total;
+    }
+
+    function setAnalyticsPeriod(period) {
+      analyticsPeriod = period;
+      ['day', 'week', 'month'].forEach(p => {
+        const btn = document.getElementById({ day: 'anBtnDay', week: 'anBtnWeek', month: 'anBtnMonth' }[p]);
+        btn.classList.toggle('active', p === period);
+        btn.setAttribute('aria-selected', p === period ? 'true' : 'false');
+      });
+      renderAnalytics();
+    }
+
+    function getAnalyticsData() {
+      const period = analyticsPeriod;
+      const count = ANALYTICS_WINDOW[period];
+      const today = parseLocalDate(getTodayStr());
+      const keysNow = buildPeriodKeys(period, count * 2, today);
+      const prevKeys = keysNow.slice(0, count);
+      const curKeys = keysNow.slice(count);
+      const all = aggregateTransactions(period, keysNow);
+      return { period, count, rows: all.slice(count), prevRows: all.slice(0, count), curKeys, prevKeys };
+    }
+
+    function formatNum(n) {
+      return Number(n || 0).toLocaleString('id-ID');
+    }
+
+    function deltaText(cur, prev, periodName, count) {
+      if (!prev && !cur) return `sama dengan ${count} ${periodName} sebelumnya`;
+      if (!prev) return `naik dari 0 (${count} ${periodName} sebelumnya)`;
+      const pct = Math.round(((cur - prev) / prev) * 100);
+      if (pct === 0) return `sama dengan ${count} ${periodName} sebelumnya`;
+      return `${pct > 0 ? '▲ +' : '▼ '}${pct}% vs ${count} ${periodName} sebelumnya`;
+    }
+
+    function renderAnalytics() {
+      const section = document.getElementById('viewAnalytics');
+      if (!section || section.style.display === 'none') return;
+      const { period, count, rows, prevRows, curKeys } = getAnalyticsData();
+      const name = ANALYTICS_NAME[period];
+      const total = sumRows(rows);
+      const prev = sumRows(prevRows);
+
+      document.getElementById('anRangeLabel').textContent =
+        `${count} ${name} terakhir · ${periodLabel(curKeys[0], period, true)} – ${periodLabel(curKeys[curKeys.length - 1], period, true)}`;
+
+      // ---- KPI ----
+      const kpis = [
+        { label: 'Minyak goreng', value: `${formatNum(total.minyak)} L`, d: deltaText(total.minyak, prev.minyak, name, count) },
+        { label: 'Gas LPG 3 kg', value: `${formatNum(total.gas)} tabung`, d: deltaText(total.gas, prev.gas, name, count) },
+        { label: 'Beras SPHP', value: `${formatNum(total.beras)} pack`, sub: `${formatNum(total.beras * 5)} kg`, d: deltaText(total.beras, prev.beras, name, count) },
+        { label: 'Transaksi', value: formatNum(total.tx), d: deltaText(total.tx, prev.tx, name, count) },
+        { label: 'Warga dilayani', value: formatNum(total.people), d: deltaText(total.people, prev.people, name, count) }
+      ];
+      const kpiRow = document.getElementById('anKpiRow');
+      kpiRow.innerHTML = '';
+      kpis.forEach(k => {
+        const tile = document.createElement('div');
+        tile.className = 'an-kpi';
+        const l = document.createElement('div'); l.className = 'an-kpi-label'; l.textContent = k.label;
+        const v = document.createElement('div'); v.className = 'an-kpi-value'; v.textContent = k.value;
+        tile.append(l, v);
+        if (k.sub) { const s = document.createElement('div'); s.className = 'an-kpi-sub'; s.textContent = k.sub; tile.append(s); }
+        const d = document.createElement('div'); d.className = 'an-kpi-delta'; d.textContent = k.d;
+        tile.append(d);
+        kpiRow.append(tile);
+      });
+
+      // ---- Grafik (small multiples: satuan berbeda, jadi tiap komoditas punya sumbu sendiri) ----
+      const grid = document.getElementById('anChartGrid');
+      grid.innerHTML = '';
+      const charts = [
+        { field: 'minyak', title: 'Minyak goreng', unit: 'L' },
+        { field: 'gas', title: 'Gas LPG 3 kg', unit: 'tabung' },
+        { field: 'beras', title: 'Beras SPHP', unit: 'pack' },
+        { field: 'tx', title: 'Jumlah transaksi', unit: 'transaksi' }
+      ];
+      charts.forEach(ch => {
+        const card = document.createElement('div');
+        card.className = 'card an-chart-card';
+        const head = document.createElement('div');
+        head.className = 'an-chart-head';
+        const t = document.createElement('div'); t.className = 'an-chart-title'; t.textContent = ch.title;
+        const s = document.createElement('div'); s.className = 'an-chart-sub';
+        s.textContent = `per ${name} · total ${formatNum(rows.reduce((a, r) => a + r[ch.field], 0))} ${ch.unit}`;
+        head.append(t, s);
+        const plot = document.createElement('div');
+        plot.className = 'an-plot';
+        card.append(head, plot);
+        grid.append(card);
+        drawBarChart(plot, rows.map(r => ({ key: r.key, value: r[ch.field] })), period, ch);
+      });
+
+      // ---- Tabel ----
+      document.getElementById('anTableSub').textContent = `· ${count} ${name} terakhir, terbaru di atas`;
+      const table = document.createElement('table');
+      table.className = 'excel-table an-table';
+      table.innerHTML = '<thead><tr><th>Periode</th><th class="num">Minyak (L)</th><th class="num">Gas (tabung)</th><th class="num">Beras (pack)</th><th class="num">Beras (kg)</th><th class="num">Transaksi</th><th class="num">Warga</th></tr></thead>';
+      const tbody = document.createElement('tbody');
+      [...rows].reverse().forEach(r => {
+        const tr = document.createElement('tr');
+        [periodLabel(r.key, period, true), r.minyak, r.gas, r.beras, r.beras * 5, r.tx, r.people].forEach((val, i) => {
+          const td = document.createElement('td');
+          td.textContent = i === 0 ? val : formatNum(val);
+          if (i > 0) td.className = 'num';
+          tr.append(td);
+        });
+        tbody.append(tr);
+      });
+      const tfoot = document.createElement('tfoot');
+      const ftr = document.createElement('tr');
+      ['Total', total.minyak, total.gas, total.beras, total.beras * 5, total.tx, total.people].forEach((val, i) => {
+        const td = document.createElement('td');
+        td.textContent = i === 0 ? val : formatNum(val);
+        if (i > 0) td.className = 'num';
+        ftr.append(td);
+      });
+      tfoot.append(ftr);
+      table.append(tbody, tfoot);
+      const wrap = document.createElement('div');
+      wrap.className = 'table-wrap an-table-wrap';
+      wrap.append(table);
+      const container = document.getElementById('anTableContainer');
+      container.innerHTML = '';
+      container.append(wrap);
+    }
+
+    function niceStep(max) {
+      if (max <= 0) return 1;
+      const raw = max / 4;
+      const pow = Math.pow(10, Math.floor(Math.log10(raw)));
+      const step = [1, 2, 5, 10].map(m => m * pow).find(s => s >= raw);
+      return Math.max(1, step);
+    }
+
+    function drawBarChart(host, data, period, ch) {
+      const NS = 'http://www.w3.org/2000/svg';
+      const W = Math.max(260, Math.round(host.clientWidth || 320));
+      const H = 200;
+      const pad = { l: 34, r: 8, t: 22, b: 26 };
+      const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
+      const maxVal = Math.max(0, ...data.map(d => d.value));
+      const step = niceStep(maxVal);
+      const top = Math.max(step, Math.ceil(maxVal / step) * step);
+      const y = v => pad.t + ph - (v / top) * ph;
+      const band = pw / data.length;
+      const bw = Math.min(24, band * 0.62);
+
+      const svg = document.createElementNS(NS, 'svg');
+      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      svg.setAttribute('width', W);
+      svg.setAttribute('height', H);
+      svg.setAttribute('role', 'img');
+      svg.setAttribute('aria-label', `${ch.title} per ${ANALYTICS_NAME[period]}`);
+      const mk = (tag, attrs) => { const el = document.createElementNS(NS, tag); Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v)); return el; };
+
+      // grid & sumbu-Y
+      for (let v = 0; v <= top; v += step) {
+        svg.append(mk('line', { x1: pad.l, x2: W - pad.r, y1: y(v), y2: y(v), class: v === 0 ? 'an-axis' : 'an-grid' }));
+        const tx = mk('text', { x: pad.l - 6, y: y(v) + 3.5, 'text-anchor': 'end', class: 'an-tick' });
+        tx.textContent = formatNum(v);
+        svg.append(tx);
+      }
+
+      // label sumbu-X (dijarangkan supaya tidak bertumpuk)
+      const every = Math.max(1, Math.ceil(data.length * 46 / pw));
+      data.forEach((d, i) => {
+        const fromEnd = data.length - 1 - i;
+        if (fromEnd % every !== 0) return;
+        const label = periodLabel(d.key, period);
+        const half = label.length * 3.2; // perkiraan setengah lebar teks 11px
+        const lx = Math.min(Math.max(pad.l + band * i + band / 2, pad.l + half), W - 2 - half);
+        const tx = mk('text', { x: lx, y: H - 8, 'text-anchor': 'middle', class: 'an-tick' });
+        tx.textContent = label;
+        svg.append(tx);
+      });
+
+      // batang: ujung data membulat 4px, pangkal di baseline tetap siku
+      data.forEach((d, i) => {
+        const cx = pad.l + band * i + band / 2;
+        const x0 = cx - bw / 2, x1 = cx + bw / 2;
+        const isLast = i === data.length - 1;
+        if (d.value > 0) {
+          const yTop = y(d.value), yBase = y(0);
+          const r = Math.min(4, bw / 2, yBase - yTop);
+          const path = `M${x0},${yBase} V${yTop + r} Q${x0},${yTop} ${x0 + r},${yTop} H${x1 - r} Q${x1},${yTop} ${x1},${yTop + r} V${yBase} Z`;
+          svg.append(mk('path', { d: path, class: isLast ? 'an-bar an-bar-current' : 'an-bar', 'data-i': i }));
+        }
+        if (isLast) {
+          const lbl = mk('text', { x: cx, y: y(d.value) - 6, 'text-anchor': 'middle', class: 'an-value' });
+          lbl.textContent = formatNum(d.value);
+          svg.append(lbl);
+        }
+        // area sentuh/hover selebar pita (lebih besar dari batangnya)
+        const hit = mk('rect', { x: pad.l + band * i, y: pad.t, width: band, height: ph, class: 'an-hit', tabindex: 0, 'data-i': i });
+        hit.setAttribute('aria-label', `${periodLabel(d.key, period, true)}: ${formatNum(d.value)} ${ch.unit}`);
+        const show = ev => showAnalyticsTooltip(ev, hit, periodLabel(d.key, period, true), `${formatNum(d.value)} ${ch.unit}`, svg, i);
+        hit.addEventListener('pointerenter', show);
+        hit.addEventListener('pointermove', show);
+        hit.addEventListener('focus', show);
+        hit.addEventListener('pointerleave', hideAnalyticsTooltip);
+        hit.addEventListener('blur', hideAnalyticsTooltip);
+        svg.append(hit);
+      });
+      host.append(svg);
+    }
+
+    function showAnalyticsTooltip(ev, hitEl, label, value, svg, idx) {
+      const tip = document.getElementById('anTooltip');
+      tip.textContent = '';
+      const v = document.createElement('div'); v.className = 'an-tip-value'; v.textContent = value;
+      const l = document.createElement('div'); l.className = 'an-tip-label'; l.textContent = label;
+      tip.append(v, l);
+      svg.querySelectorAll('.an-bar').forEach(b => b.classList.toggle('is-hover', b.getAttribute('data-i') === String(idx)));
+      const rect = hitEl.getBoundingClientRect();
+      tip.style.display = 'block';
+      const tw = tip.offsetWidth, th = tip.offsetHeight;
+      let left = rect.left + rect.width / 2 - tw / 2;
+      left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+      const top = Math.max(8, rect.top - th - 8);
+      tip.style.left = `${left}px`;
+      tip.style.top = `${top}px`;
+    }
+
+    function hideAnalyticsTooltip() {
+      const tip = document.getElementById('anTooltip');
+      tip.style.display = 'none';
+      document.querySelectorAll('.an-bar.is-hover').forEach(b => b.classList.remove('is-hover'));
+    }
+
+    function exportAnalyticsCSV() {
+      const { period, rows } = getAnalyticsData();
+      const lines = [['Periode', 'Kunci', 'Minyak_L', 'Gas_Tabung', 'Beras_Pack', 'Beras_Kg', 'Transaksi', 'Warga_Dilayani']];
+      rows.forEach(r => lines.push([`"${periodLabel(r.key, period, true)}"`, r.key, r.minyak, r.gas, r.beras, r.beras * 5, r.tx, r.people]));
+      const blob = new Blob(['﻿' + lines.map(l => l.join(',')).join('\n')], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Analitik_${ANALYTICS_NAME[period]}_KDKMP_${getTodayStr()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast('📥 Analitik berhasil di-export.');
+    }
+
+    let analyticsResizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(analyticsResizeTimer);
+      analyticsResizeTimer = setTimeout(renderAnalytics, 150);
+    });
 
     let focusFullscreenFallback = false;
 
@@ -7214,6 +7822,7 @@ function jsonOut_(obj) {
       if (document.getElementById('viewDb').style.display !== 'none') {
         renderDatabaseTab();
       }
+      renderAnalytics();
     }
 
     // Boot initialization
