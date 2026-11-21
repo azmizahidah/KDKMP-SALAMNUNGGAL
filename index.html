@@ -1266,6 +1266,63 @@
       padding: 12px;
     }
 
+    /* ================= LAYAR LOGIN PIN ================= */
+    .login-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: var(--excel-green);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .login-screen.open {
+      display: flex;
+    }
+
+    .login-card {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      width: 100%;
+      max-width: 340px;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .login-card h1 {
+      margin: 0 0 4px 0;
+      font-size: 18px;
+      color: var(--excel-green-dark);
+    }
+
+    .login-pin-input {
+      width: 100%;
+      font-size: 28px;
+      letter-spacing: 12px;
+      text-align: center;
+      padding: 12px;
+      border: 2px solid var(--excel-border);
+      border-radius: var(--radius-md);
+      margin: 16px 0 10px 0;
+      font-family: ui-monospace, Consolas, monospace;
+    }
+
+    .login-pin-input:focus {
+      outline: none;
+      border-color: var(--excel-green);
+    }
+
+    .login-error {
+      min-height: 18px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--danger);
+      margin-bottom: 10px;
+    }
+
     .modal-backdrop.open {
       display: flex;
     }
@@ -1656,6 +1713,28 @@
   </style>
 </head>
 <body>
+
+  <!-- LAYAR LOGIN PIN -->
+  <div class="login-screen" id="loginScreen">
+    <form class="login-card" onsubmit="event.preventDefault(); submitLogin();">
+      <div style="font-size:36px;">🔒</div>
+      <h1>KDKMP Salamnunggal</h1>
+      <div style="font-size:13px; color:var(--text-muted);">Kasir Kuota Sembako • Masukkan PIN 6 angka</div>
+      <input
+        type="password"
+        id="loginPinInput"
+        class="login-pin-input"
+        autocomplete="off"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        maxlength="6"
+        placeholder="••••••"
+        oninput="this.value = this.value.replace(/\D/g, '').slice(0, 6); if (this.value.length === 6) submitLogin();"
+      />
+      <div class="login-error" id="loginError"></div>
+      <button type="submit" class="btn btn-green" id="loginSubmitBtn" style="width:100%; min-height:46px; font-size:15px;">Masuk</button>
+    </form>
+  </div>
 
   <!-- TOP EXCEL RIBBON -->
   <header class="top-ribbon">
@@ -2195,22 +2274,6 @@
           />
         </div>
 
-        <div class="form-group">
-          <label class="form-label">
-            <span>🔒 PIN Database 6 Angka (sama dengan PIN_RAHASIA di Apps Script) *</span>
-          </label>
-          <input
-            type="password"
-            id="cloudPinInput"
-            class="form-input mono-input"
-            autocomplete="off"
-            inputmode="numeric"
-            pattern="[0-9]*"
-            maxlength="6"
-            placeholder="••••••"
-            oninput="this.value = this.value.replace(/\D/g, '').slice(0, 6)"
-          />
-        </div>
 
         <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
           <button type="button" class="btn btn-green" style="flex:1; min-height:44px;" onclick="saveCloudConfig()">
@@ -2246,8 +2309,12 @@
           </button>
         </div>
 
+        <button type="button" id="logoutBtn" class="btn btn-outline" style="display:none; width:100%; min-height:42px; margin-bottom:10px; border-color:var(--danger-border); color:var(--danger);" onclick="logoutApp()">
+          🚪 Keluar (kunci aplikasi di HP ini)
+        </button>
+
         <div style="background:#F8FAFC; border:1px solid var(--excel-border); border-radius:8px; padding:9px 11px; font-size:12px; color:#475569; line-height:1.45;">
-          Tempel URL Web App Google Apps Script (<code>.../exec</code>), pastikan <strong>Kode Toko / Gerai</strong> sama di semua perangkat, lalu tekan <strong>Hubungkan &amp; Sinkronkan</strong>.
+          PIN login diminta saat aplikasi dibuka. Tempel URL Web App Google Apps Script (<code>.../exec</code>), pastikan <strong>Kode Toko / Gerai</strong> sama di semua perangkat, lalu tekan <strong>Hubungkan &amp; Sinkronkan</strong>.
         </div>
       </div>
     </div>
@@ -2355,6 +2422,11 @@
     let editTxQtyVal = 1;
     let editTxMaxAllowed = 5;
 
+    // URL Web App Google Apps Script (berakhiran /exec) milik KDKMP Salamnunggal.
+    // Jika diisi, semua HP otomatis tersambung dan cukup login dengan PIN.
+    // Aman ditaruh di sini: tanpa PIN yang benar, URL ini tidak bisa membaca/menulis data.
+    const DATABASE_URL = '';
+
     // Cloud Sync state
     let cloudConfig = { dbUrl: '', storeCode: 'kdkmp-salamnunggal' };
     let cloudConnected = false;
@@ -2436,11 +2508,23 @@
           localStorage.setItem(STORAGE_CLOUD_CFG, JSON.stringify(cloudConfig));
           window.history.replaceState({}, document.title, window.location.pathname);
         } else if (urlDb && detectCloudProvider(urlDb) === 'gas') {
-          cloudConfig.dbUrl = normalizeFirebaseUrl(urlDb);
+          const nextUrl = normalizeFirebaseUrl(urlDb);
+          if (nextUrl !== cloudConfig.dbUrl) cloudConfig.pin = '';
+          cloudConfig.dbUrl = nextUrl;
           if (urlToko) cloudConfig.storeCode = sanitizeStoreCode(urlToko);
           localStorage.setItem(STORAGE_CLOUD_CFG, JSON.stringify(cloudConfig));
           // Clean sensitive URL parameters from address bar
           window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // Database bawaan yang ditanam di kode selalu dipakai → semua HP wajib login PIN.
+        if (DATABASE_URL) {
+          const fixedUrl = normalizeFirebaseUrl(DATABASE_URL);
+          if (cloudConfig.dbUrl !== fixedUrl) {
+            cloudConfig.dbUrl = fixedUrl;
+            cloudConfig.pin = '';
+            localStorage.setItem(STORAGE_CLOUD_CFG, JSON.stringify(cloudConfig));
+          }
         }
 
         // Migrate older v1/v2 keys seamlessly if v3 is empty
@@ -2841,6 +2925,8 @@ function jsonOut_(obj) {
       return data;
     }
 
+    // PIN ditolak server (mis. PIN diganti admin) → keluar & minta login ulang.
+    // Antrean data yang belum terkirim tetap aman di HP.
     function handlePinRejected(reason) {
       stopCloudRealtimeListener();
       cloudConnected = false;
@@ -2849,9 +2935,76 @@ function jsonOut_(obj) {
         showToast('⛔ Terlalu banyak PIN salah. Akses database dikunci 15 menit, coba lagi nanti.', 'error');
         return;
       }
-      updateCloudBadgeUI('error', 'PIN Salah');
-      showToast('🔒 PIN database salah atau belum diisi. Masukkan PIN yang benar di menu Cloud.', 'error');
-      if (!document.getElementById('cloudModal').classList.contains('open')) openCloudModal();
+      cloudConfig.pin = '';
+      localStorage.setItem(STORAGE_CLOUD_CFG, JSON.stringify(cloudConfig));
+      updateCloudBadgeUI('error', 'Perlu Login');
+      showLoginScreen('PIN sudah tidak berlaku. Silakan masuk lagi.');
+    }
+
+    /* ================= LOGIN PIN ================= */
+    function showLoginScreen(message = '') {
+      const inp = document.getElementById('loginPinInput');
+      inp.value = '';
+      document.getElementById('loginError').textContent = message;
+      document.getElementById('loginScreen').classList.add('open');
+      setTimeout(() => inp.focus(), 50);
+    }
+
+    let loginInProgress = false;
+    async function submitLogin() {
+      if (loginInProgress) return;
+      const inp = document.getElementById('loginPinInput');
+      const errEl = document.getElementById('loginError');
+      const btn = document.getElementById('loginSubmitBtn');
+      const pin = inp.value.trim();
+      if (!/^\d{6}$/.test(pin)) {
+        errEl.textContent = 'PIN harus 6 angka.';
+        return;
+      }
+      if (!navigator.onLine) {
+        errEl.textContent = 'Tidak ada internet. Login pertama butuh koneksi.';
+        return;
+      }
+
+      loginInProgress = true;
+      btn.disabled = true;
+      btn.textContent = 'Memeriksa...';
+      errEl.textContent = '';
+      cloudConfig.pin = pin;
+      try {
+        const data = await gasRequest({ action: 'pull' });
+        localStorage.setItem(STORAGE_CLOUD_CFG, JSON.stringify(cloudConfig));
+        document.getElementById('loginScreen').classList.remove('open');
+        mergeCloudSnapshot(data);
+        cloudConnected = true;
+        startCloudRealtimeListener();
+        refreshCloudModalStatus();
+        showToast('✅ Berhasil masuk. Data tersinkron dengan Google Sheets.');
+      } catch (err) {
+        cloudConfig.pin = '';
+        inp.value = '';
+        if (err.message === 'PIN_SALAH') {
+          errEl.textContent = 'PIN salah.';
+        } else if (err.message === 'TERKUNCI') {
+          errEl.textContent = 'Terlalu banyak PIN salah. Coba lagi 15 menit lagi.';
+        } else {
+          errEl.textContent = 'Gagal terhubung ke server. Cek internet lalu coba lagi.';
+        }
+        inp.focus();
+      } finally {
+        loginInProgress = false;
+        btn.disabled = false;
+        btn.textContent = 'Masuk';
+      }
+    }
+
+    function logoutApp() {
+      stopCloudRealtimeListener();
+      cloudConfig.pin = '';
+      cloudConnected = false;
+      localStorage.setItem(STORAGE_CLOUD_CFG, JSON.stringify(cloudConfig));
+      closeCloudModal();
+      showLoginScreen();
     }
 
     function sanitizeStoreCode(code) {
@@ -3104,7 +3257,6 @@ function jsonOut_(obj) {
     function openCloudModal() {
       document.getElementById('cloudDbUrlInput').value = cloudConfig.dbUrl || '';
       document.getElementById('cloudStoreCodeInput').value = cloudConfig.storeCode || 'kdkmp-salamnunggal';
-      document.getElementById('cloudPinInput').value = cloudConfig.pin || '';
       previewCloudProvider();
       refreshCloudModalStatus();
       document.getElementById('cloudModal').classList.add('open');
@@ -3125,7 +3277,9 @@ function jsonOut_(obj) {
         banner.style.color = '#166534';
         banner.innerHTML = `✅ Terhubung ke <strong>${srvName}</strong> • Kode Toko: <strong>${escapeHtml(cloudConfig.storeCode)}</strong><br><span style="font-size:11px; font-weight:500;">Semua HP &amp; Tablet yang memakai link sama otomatis berbagi data warga &amp; penjualan secara real-time.</span>`;
         shareBox.style.display = 'block';
+        document.getElementById('logoutBtn').style.display = cloudConfig.pin ? 'block' : 'none';
       } else {
+        document.getElementById('logoutBtn').style.display = 'none';
         banner.style.background = '#FFFBEB';
         banner.style.borderColor = '#FDE68A';
         banner.style.color = '#92400E';
@@ -3137,7 +3291,6 @@ function jsonOut_(obj) {
     async function saveCloudConfig() {
       const rawUrl = document.getElementById('cloudDbUrlInput').value;
       const rawCode = document.getElementById('cloudStoreCodeInput').value;
-      const pin = document.getElementById('cloudPinInput').value.trim();
       const cleanUrl = normalizeFirebaseUrl(rawUrl);
       const cleanCode = sanitizeStoreCode(rawCode);
 
@@ -3157,14 +3310,17 @@ function jsonOut_(obj) {
         return;
       }
 
-      if (!/^\d{6}$/.test(pin)) {
-        showToast('PIN Database harus 6 angka.', 'warn');
-        return;
-      }
-
-      cloudConfig = { dbUrl: cleanUrl, storeCode: cleanCode, pin };
+      // PIN login tetap dipakai kalau URL-nya sama; URL baru = wajib login ulang.
+      const keepPin = cleanUrl === cloudConfig.dbUrl ? (cloudConfig.pin || '') : '';
+      cloudConfig = { dbUrl: cleanUrl, storeCode: cleanCode, pin: keepPin };
       localStorage.setItem(STORAGE_CLOUD_CFG, JSON.stringify(cloudConfig));
       refreshCloudModalStatus();
+
+      if (!keepPin) {
+        closeCloudModal();
+        showLoginScreen();
+        return;
+      }
 
       const ok = await pullFullCloudSnapshot(false);
       if (ok) {
@@ -5787,7 +5943,10 @@ function jsonOut_(obj) {
       updateClock();
       setInterval(updateClock, 15000);
 
-      if (cloudConfig.dbUrl) {
+      if (cloudConfig.dbUrl && !cloudConfig.pin) {
+        updateCloudBadgeUI('error', 'Perlu Login');
+        showLoginScreen();
+      } else if (cloudConfig.dbUrl) {
         startCloudRealtimeListener();
       } else {
         updateCloudBadgeUI('local', 'Mode Lokal');
