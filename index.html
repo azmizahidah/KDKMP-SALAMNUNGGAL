@@ -11,6 +11,9 @@
   <title>Kasir Kuota Sembako — KDKMP Salamnunggal</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23C8102E'/%3E%3Cpath d='M12 30 L32 12 L52 30' fill='none' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M18 27 V52 H46 V27' fill='none' stroke='%23fff' stroke-width='6'/%3E%3C/svg%3E" />
   <!-- Offline-capable QR & OCR libraries (graceful fallback if offline) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <style>
@@ -1714,6 +1717,1230 @@
         width: 100%;
       }
     }
+
+    /* =====================================================================
+       TEMA MODERN MINIMALIS — KOPDES MERAH PUTIH
+       Lapisan ini menimpa gaya lama di atas. Netral (putih/abu) sebagai dasar,
+       merah hanya untuk aksi utama & penanda aktif.
+    ===================================================================== */
+    :root {
+      --brand-red: #C8102E;
+      --brand-red-dark: #A00D25;
+      --brand-red-light: #FDF0F2;
+      --brand-red-mid: #F5C7CF;
+      --bg-app: #F6F7F9;
+      --bg-card: #FFFFFF;
+      --bg-soft: #F3F4F6;
+      --bg-soft-hover: #E9EBEE;
+      --text-main: #111827;
+      --text-muted: #6B7280;
+      --text-light: #9CA3AF;
+      --excel-border: #E7E8EB;
+      --excel-grid: #F0F1F3;
+      --ink: #111827;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px rgba(17, 24, 39, 0.04);
+      --shadow-md: 0 12px 32px rgba(17, 24, 39, 0.10);
+      --focus-ring: 0 0 0 3px rgba(200, 16, 46, 0.14);
+    }
+
+    html, body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-app);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .ico {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      flex-shrink: 0;
+    }
+
+    /* ---------- Header ---------- */
+    .top-ribbon {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      color: var(--text-main);
+      border-top: 3px solid var(--brand-red);
+      border-bottom: 1px solid var(--excel-border);
+      box-shadow: none;
+      padding: calc(10px + var(--safe-top)) 20px 10px 20px;
+    }
+
+    .brand-area {
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 36px;
+      background: transparent;
+      box-shadow: none;
+      border-radius: 0;
+    }
+
+    .brand-logo svg {
+      width: 48px;
+      height: 36px;
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      opacity: 1;
+    }
+
+    .btn-ribbon,
+    .cloud-status-btn {
+      background: var(--bg-soft);
+      border: 1px solid transparent;
+      color: var(--text-main);
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      min-height: 36px;
+      padding: 6px 14px;
+      box-shadow: none;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-ribbon:hover,
+    .cloud-status-btn:hover {
+      background: var(--bg-soft-hover);
+    }
+
+    .btn-ribbon.fullscreen-active {
+      background: var(--ink);
+      color: #FFFFFF;
+    }
+
+    .dot-status.online {
+      background: #22C55E;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+    }
+
+    /* Baris rumus ala Excel tidak dipakai lagi (elemen tetap ada untuk jam & status). */
+    .formula-bar {
+      display: none !important;
+    }
+
+    /* ---------- Navigasi tab (segmented control) ---------- */
+    .sheet-tabs-bar {
+      background: transparent;
+      border: none;
+      padding: 20px 20px 0 20px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .sheet-tabs {
+      background: #ECEDF0;
+      border-radius: 12px;
+      padding: 4px;
+      gap: 2px;
+    }
+
+    .sheet-tab {
+      background: transparent;
+      border: none;
+      border-radius: 9px;
+      color: var(--text-muted);
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 8px 16px;
+      margin: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .sheet-tab:hover {
+      color: var(--text-main);
+    }
+
+    .sheet-tab.active {
+      background: #FFFFFF;
+      color: var(--text-main);
+      border: none;
+      box-shadow: 0 1px 3px rgba(17, 24, 39, 0.10);
+    }
+
+    .tab-count {
+      background: var(--bg-soft);
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 1px 8px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .sheet-tab.active .tab-count {
+      background: var(--brand-red-light);
+      color: var(--brand-red);
+    }
+
+    .sheet-quick-actions {
+      gap: 6px;
+    }
+
+    .sheet-quick-actions .btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .sheet-quick-actions .btn:hover {
+      background: var(--bg-soft);
+      color: var(--text-main);
+    }
+
+    /* ---------- Tata letak ---------- */
+    .main-wrap {
+      padding: 16px 20px 32px 20px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .pos-grid {
+      gap: 16px;
+    }
+
+    /* ---------- Kartu ---------- */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--excel-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: transparent;
+      border-bottom: none;
+      padding: 18px 20px 6px 20px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      gap: 8px;
+    }
+
+    .card-sub {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .card-body {
+      padding: 14px 20px 20px 20px;
+    }
+
+    /* ---------- Tombol ---------- */
+    .btn {
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 13px;
+      box-shadow: none;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .btn-green {
+      background: var(--brand-red);
+      border: 1px solid var(--brand-red);
+      color: #FFFFFF;
+    }
+
+    .btn-green:hover {
+      background: var(--brand-red-dark);
+      border-color: var(--brand-red-dark);
+    }
+
+    .btn-outline {
+      background: #FFFFFF;
+      border: 1px solid var(--excel-border);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-soft);
+    }
+
+    .btn-edit-outline {
+      background: var(--bg-soft);
+      border: 1px solid transparent;
+      color: var(--text-main);
+    }
+
+    .btn-danger-outline {
+      background: #FFFFFF;
+      border: 1px solid var(--excel-border);
+      color: var(--danger);
+    }
+
+    .btn-danger-outline:hover {
+      background: var(--danger-bg);
+      border-color: var(--danger-border);
+    }
+
+    .btn-warn {
+      background: var(--ink);
+      border: 1px solid var(--ink);
+      color: #FFFFFF;
+    }
+
+    .btn-warn:hover {
+      background: #000000;
+    }
+
+    /* ---------- Pencarian, scan & keypad ---------- */
+    .badge-digit {
+      background: var(--bg-soft);
+      color: var(--text-muted);
+      border: none;
+      border-radius: 999px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 12px;
+      padding: 3px 10px;
+    }
+
+    .badge-digit.ok {
+      background: var(--brand-red-light);
+      color: var(--brand-red);
+    }
+
+    .scan-hero-row {
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .btn-scan-primary {
+      background: var(--brand-red);
+      border-radius: 12px;
+      min-height: 52px;
+      font-size: 14.5px;
+      font-weight: 600;
+      gap: 10px;
+      box-shadow: 0 6px 16px rgba(200, 16, 46, 0.22);
+    }
+
+    .btn-scan-primary:hover {
+      background: var(--brand-red-dark);
+    }
+
+    .btn-paste {
+      background: var(--bg-soft);
+      border: none;
+      color: var(--text-main);
+      border-radius: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px;
+    }
+
+    .btn-paste:hover {
+      background: var(--bg-soft-hover);
+    }
+
+    .search-input {
+      border: 1px solid var(--excel-border);
+      border-radius: 12px;
+      background: #FFFFFF;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      min-height: 52px;
+      box-shadow: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--brand-red);
+      box-shadow: var(--focus-ring);
+      outline: none;
+    }
+
+    .search-input::placeholder {
+      font-weight: 400;
+      letter-spacing: 0;
+      color: var(--text-light);
+    }
+
+    .search-clear-btn {
+      background: var(--bg-soft);
+      border: none;
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .digit-counter-row {
+      color: var(--text-light);
+      font-size: 12px;
+      margin: 6px 2px 12px 2px;
+    }
+
+    .numpad-toggle-mobile {
+      background: var(--bg-soft);
+      border: none;
+      border-radius: 10px;
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .numpad-toggle-alt {
+      background: #FFFFFF;
+      border: 1px solid var(--excel-border);
+    }
+
+    .numpad-grid {
+      gap: 8px;
+    }
+
+    .num-key {
+      background: var(--bg-soft);
+      border: none;
+      border-radius: 12px;
+      box-shadow: none;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text-main);
+      min-height: 54px;
+      transition: background-color 0.1s ease, transform 0.08s ease;
+    }
+
+    .num-key:hover {
+      background: var(--bg-soft-hover);
+    }
+
+    .num-key:active {
+      background: #DCDFE3;
+      transform: scale(0.97);
+    }
+
+    .num-key.key-clr {
+      background: #FFFFFF;
+      border: 1px solid var(--excel-border);
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .num-key.key-del {
+      background: #FFFFFF;
+      border: 1px solid var(--excel-border);
+      color: var(--brand-red);
+      font-size: 20px;
+    }
+
+    .search-results-list {
+      gap: 6px;
+    }
+
+    .search-hit-item {
+      border: 1px solid var(--excel-border);
+      border-radius: 12px;
+      background: #FFFFFF;
+    }
+
+    .search-hit-item:hover,
+    .search-hit-item:active {
+      border-color: var(--brand-red-mid);
+      background: var(--brand-red-light);
+    }
+
+    /* ---------- Profil warga & pendaftaran ---------- */
+    .profile-box,
+    .reg-box {
+      background: #FAFAFB;
+      border: 1px solid var(--excel-border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .citizen-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .tag {
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 11px;
+      padding: 3px 9px;
+      border: none;
+    }
+
+    .tag-green {
+      background: #ECFDF3;
+      color: #067647;
+      border: none;
+    }
+
+    .tag-warn {
+      background: #FFF7E6;
+      color: #9A5B00;
+      border: none;
+    }
+
+    .tag-info {
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: none;
+    }
+
+    .id-cell {
+      background: #FFFFFF;
+      border: 1px solid var(--excel-border);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+
+    .id-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-light);
+    }
+
+    .id-val {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .inline-complete-box {
+      background: #FFFBF2;
+      border: 1px dashed #F2C66D;
+      border-radius: 12px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 5px;
+    }
+
+    .form-input,
+    select.form-input {
+      border: 1px solid var(--excel-border);
+      border-radius: 10px;
+      min-height: 44px;
+      padding: 10px 12px;
+      background: #FFFFFF;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--brand-red);
+      box-shadow: var(--focus-ring);
+    }
+
+    .reg-type-btn {
+      border: 1px solid var(--excel-border);
+      border-radius: 10px;
+      background: #FFFFFF;
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 10px 8px;
+    }
+
+    .reg-type-btn.active {
+      background: var(--brand-red-light);
+      border-color: var(--brand-red);
+      color: var(--brand-red);
+    }
+
+    /* ---------- Tanggal & komoditas ---------- */
+    .date-toolbar {
+      background: var(--bg-card);
+      border: 1px solid var(--excel-border);
+      border-radius: var(--radius-lg);
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .date-pills {
+      background: var(--bg-soft);
+      border-radius: 11px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .date-pill-btn {
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-weight: 600;
+      min-height: 34px;
+      padding: 6px 14px;
+    }
+
+    .date-pill-btn.active {
+      background: #FFFFFF;
+      color: var(--text-main);
+      border: none;
+      box-shadow: 0 1px 3px rgba(17, 24, 39, 0.10);
+    }
+
+    .date-pill-btn.yesterday-active {
+      background: #FFF7E6;
+      color: #9A5B00;
+      border: none;
+    }
+
+    .date-input-compact {
+      background: transparent;
+      border: none;
+      font-weight: 600;
+      color: var(--text-main);
+      min-height: 34px;
+    }
+
+    #activePeriodInfo {
+      font-weight: 500 !important;
+      color: var(--text-muted) !important;
+    }
+
+    .commodities-grid {
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .item-card,
+    .item-card.eligible,
+    .item-card.locked {
+      background: var(--bg-card);
+      border: 1px solid var(--excel-border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .item-card.partial-used {
+      background: var(--bg-card);
+      border: 1px solid var(--brand-red-mid);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .item-card.exhausted {
+      background: #FAFAFB;
+      border: 1px solid var(--excel-border);
+    }
+
+    .item-card.exhausted .item-name,
+    .item-card.exhausted .item-icon {
+      opacity: 0.55;
+    }
+
+    @keyframes pulseConfirm {
+      0% { box-shadow: 0 0 0 0 rgba(200, 16, 46, 0.35); }
+      100% { box-shadow: 0 0 0 10px rgba(200, 16, 46, 0); }
+    }
+
+    .item-icon {
+      font-size: 22px;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--bg-soft);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .item-rule-badge {
+      background: var(--bg-soft);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 11px;
+      padding: 4px 10px;
+      border: none !important;
+    }
+
+    .partial-status-pill {
+      background: var(--brand-red-light);
+      color: var(--brand-red);
+      font-weight: 600;
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    .item-name {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-top: 4px;
+    }
+
+    .item-sub {
+      color: var(--text-light);
+      font-size: 12px;
+    }
+
+    .quota-meter,
+    .item-card.partial-used .quota-meter {
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin-bottom: 14px;
+    }
+
+    .quota-numbers {
+      margin-bottom: 8px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .quota-rem {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .quota-rem.partial {
+      color: var(--brand-red);
+    }
+
+    .quota-rem.zero {
+      color: var(--text-light);
+    }
+
+    .progress-track {
+      height: 6px;
+      background: #EEF0F2;
+    }
+
+    .progress-fill,
+    .progress-fill.partial {
+      background: var(--brand-red);
+    }
+
+    .progress-fill.full {
+      background: #D1D5DB;
+    }
+
+    .sphp-stepper,
+    .item-card.partial-used .sphp-stepper {
+      background: var(--bg-soft);
+      border: none;
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 10px;
+    }
+
+    .step-btn {
+      background: #FFFFFF;
+      border: none;
+      border-radius: 9px;
+      box-shadow: 0 1px 2px rgba(17, 24, 39, 0.08);
+      font-weight: 600;
+    }
+
+    .step-val {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .btn-tx {
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      min-height: 50px;
+    }
+
+    .btn-tx-ready {
+      background: var(--brand-red);
+      box-shadow: 0 6px 16px rgba(200, 16, 46, 0.20);
+    }
+
+    .btn-tx-ready:hover {
+      background: var(--brand-red-dark);
+    }
+
+    .btn-tx-partial {
+      background: var(--ink);
+      box-shadow: none;
+    }
+
+    .btn-tx-partial:hover,
+    .btn-tx-partial:active {
+      background: #000000;
+    }
+
+    .btn-tx-flash {
+      background: #16A34A !important;
+    }
+
+    .btn-tx-locked {
+      background: #FFF7E6;
+      color: #9A5B00;
+      border: none;
+    }
+
+    .btn-tx-disabled {
+      background: var(--bg-soft);
+      color: var(--text-light);
+    }
+
+    /* ---------- Bar "Selesai" ---------- */
+    .finish-session-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--excel-border);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px 14px 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    #finishBarTitle {
+      color: var(--text-main) !important;
+      font-weight: 700 !important;
+    }
+
+    .finish-session-bar #finishBarTitle + div {
+      color: var(--text-muted) !important;
+    }
+
+    .btn-finish-hero {
+      background: var(--ink);
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      min-height: 48px;
+      padding: 10px 22px;
+      box-shadow: none;
+    }
+
+    .btn-finish-hero:hover {
+      background: #000000;
+    }
+
+    /* ---------- Database: statistik, filter, tabel ---------- */
+    .stats-strip {
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .stat-box {
+      background: var(--bg-card);
+      border: 1px solid var(--excel-border);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-label {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .stat-num {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      margin-top: 6px;
+    }
+
+    .filter-pills {
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .filter-chip {
+      background: #FFFFFF;
+      border: 1px solid var(--excel-border);
+      border-radius: 999px;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 12.5px;
+      padding: 6px 14px;
+    }
+
+    .filter-chip.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #FFFFFF;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--excel-border);
+      border-radius: 12px;
+      box-shadow: none;
+    }
+
+    table.excel-table thead th {
+      background: #FAFAFB;
+      color: var(--text-muted);
+      font-size: 11.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-right: none;
+      border-bottom: 1px solid var(--excel-border);
+    }
+
+    table.excel-table td {
+      border-right: none;
+      border-bottom: 1px solid var(--excel-grid);
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+
+    table.excel-table tr:nth-child(even) td {
+      background: transparent;
+    }
+
+    table.excel-table tbody tr:hover td {
+      background: #FAFAFB;
+    }
+
+    /* ---------- Modal ---------- */
+    .modal-backdrop {
+      background: rgba(17, 24, 39, 0.45);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .modal-card {
+      border-radius: 20px;
+      border: none;
+      box-shadow: 0 24px 64px rgba(17, 24, 39, 0.22);
+    }
+
+    .modal-header {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--excel-grid);
+      padding: 16px 20px;
+      color: var(--text-main);
+    }
+
+    .modal-close {
+      background: var(--bg-soft);
+      border: none;
+      border-radius: 999px;
+      color: var(--text-muted);
+    }
+
+    .modal-close:hover {
+      background: var(--bg-soft-hover);
+      color: var(--text-main);
+    }
+
+    .scan-mode-btn {
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .scan-mode-btn.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #FFFFFF;
+    }
+
+    /* ---------- Login ---------- */
+    .login-card {
+      border-radius: 20px;
+      padding: 28px 24px;
+    }
+
+    .login-card h1 {
+      color: var(--text-main);
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-top: 6px;
+    }
+
+    .login-pin-input {
+      border: 1px solid var(--excel-border);
+      border-radius: 14px;
+      background: var(--bg-soft);
+    }
+
+    .login-pin-input:focus {
+      background: #FFFFFF;
+      border-color: var(--brand-red);
+      box-shadow: var(--focus-ring);
+    }
+
+    #loginSubmitBtn {
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    /* ---------- Toast ---------- */
+    .toast {
+      background: var(--ink);
+      color: #FFFFFF;
+      border: none;
+      border-left: none;
+      border-radius: 12px;
+      font-weight: 500;
+      box-shadow: 0 12px 32px rgba(17, 24, 39, 0.25);
+    }
+
+    .toast.error {
+      background: #B42318;
+    }
+
+    .toast.warn {
+      background: #B54708;
+    }
+
+    /* ---------- Kredit ---------- */
+    .app-credit-bar {
+      background: transparent !important;
+      border: none !important;
+      color: var(--text-light) !important;
+    }
+
+    .app-credit-bar span {
+      background: transparent !important;
+      border: none !important;
+      color: var(--text-light) !important;
+    }
+
+    /* ---------- Detail kecil ---------- */
+    .digit-counter-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    #searchHintText {
+      min-width: 0;
+    }
+
+    #detectedIdTypeBadge {
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-weight: 600 !important;
+    }
+
+    .reg-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+
+    .reg-digits {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-muted);
+      background: #FFFFFF;
+      border: 1px solid var(--excel-border);
+      border-radius: 6px;
+      padding: 1px 6px;
+      margin-left: 4px;
+    }
+
+    .reg-hint {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .reg-type-btn {
+      font-size: 13.5px;
+      color: var(--text-main);
+      line-height: 1.35;
+    }
+
+    .reg-type-sub {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .reg-type-btn.active .reg-type-sub {
+      color: var(--brand-red);
+      opacity: 0.8;
+    }
+
+    .form-label-hint {
+      font-weight: 500;
+      color: var(--text-light);
+    }
+
+    .note-box {
+      background: #FAFAFB;
+      border: 1px solid var(--excel-border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--text-muted);
+    }
+
+    .note-box .btn {
+      margin-top: 10px;
+    }
+
+    .note-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .note-text {
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--text-muted);
+    }
+
+    .note-box code,
+    .note-text code {
+      background: #FFFFFF;
+      border: 1px solid var(--excel-border);
+      border-radius: 5px;
+      padding: 0 4px;
+      font-size: 11.5px;
+    }
+
+    .section-label {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 4px 0 10px 0;
+    }
+
+    #cloudBannerBox {
+      border-radius: 12px !important;
+      font-weight: 600 !important;
+    }
+
+    #genericWargaAlertBox {
+      background: #FFFBF2 !important;
+      border: 1px solid #F7DFA8 !important;
+      border-radius: 12px !important;
+      color: #7A4B00 !important;
+    }
+
+    /* ---------- HP (< 900px) ---------- */
+    @media (max-width: 899px) {
+      .top-ribbon {
+        padding: calc(8px + var(--safe-top)) 14px 8px 14px;
+      }
+
+      .brand-logo,
+      .brand-logo svg {
+        width: 40px;
+        height: 30px;
+      }
+
+      .btn-ribbon,
+      .cloud-status-btn {
+        padding: 6px 11px;
+        font-size: 12px;
+        min-height: 34px;
+      }
+
+      .main-wrap {
+        padding: 12px 12px 24px 12px;
+      }
+
+      .pos-grid,
+      .commodities-grid,
+      .stats-strip {
+        gap: 12px;
+      }
+
+      .card-header {
+        padding: 16px 16px 4px 16px;
+      }
+
+      .card-body {
+        padding: 12px 16px 16px 16px;
+      }
+
+      .mobile-sticky-citizen.visible {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--excel-border);
+        border-left: 3px solid var(--brand-red);
+        border-radius: 12px;
+        box-shadow: var(--shadow-md);
+        top: calc(60px + var(--safe-top));
+      }
+
+      #stickyIds {
+        color: var(--text-muted) !important;
+      }
+
+      .mobile-bottom-nav {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-top: 1px solid var(--excel-border);
+        box-shadow: none;
+      }
+
+      .bnav-btn {
+        color: var(--text-light);
+        font-weight: 600;
+        border-radius: 12px;
+      }
+
+      .bnav-btn .bnav-icon {
+        filter: grayscale(1);
+        opacity: 0.55;
+      }
+
+      .bnav-btn.active {
+        background: transparent;
+        color: var(--brand-red);
+      }
+
+      .bnav-btn.active .bnav-icon {
+        filter: none;
+        opacity: 1;
+      }
+
+      .item-card,
+      .item-card.eligible,
+      .item-card.locked,
+      .item-card.partial-used,
+      .item-card.exhausted {
+        padding: 16px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1766,7 +2993,7 @@
     </div>
     <div class="ribbon-actions">
       <button type="button" class="btn-ribbon" id="sphpPolicyBtn" onclick="openPolicyModal()" title="Atur Batas Maksimal Kuota Beras SPHP per KK">
-        <span>🌾</span><span>SPHP: <strong id="ribbonSphpMax">5</strong></span>
+        <span>SPHP <strong id="ribbonSphpMax">5</strong>/hari</span>
       </button>
       <button type="button" class="cloud-status-btn" id="cloudStatusBtn" onclick="openCloudModal()" title="Pengaturan Sinkronisasi Multi-Device">
         <span class="dot-status" id="cloudDot"></span>
@@ -1793,18 +3020,18 @@
   <div class="sheet-tabs-bar">
     <div class="sheet-tabs">
       <button type="button" class="sheet-tab active" id="tabBtnPos" onclick="switchView('pos')">
-        <span>🛒</span> Kasir
+        Kasir
       </button>
       <button type="button" class="sheet-tab" id="tabBtnDb" onclick="switchView('db')">
-        <span>🗂️</span> Database &amp; Riwayat (<span id="tabDbCount">0</span>)
+        Database &amp; Riwayat <span class="tab-count" id="tabDbCount">0</span>
       </button>
     </div>
     <div class="sheet-quick-actions">
-      <button type="button" class="btn btn-outline btn-sm" onclick="openCloudModal()">☁️ Cloud Multi-Device</button>
-      <button type="button" class="btn btn-outline btn-sm" onclick="exportCSV()">📥 Export .CSV</button>
-      <button type="button" class="btn btn-outline btn-sm" onclick="backupJSON()">💾 Backup JSON</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="openCloudModal()">Cloud</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="exportCSV()">Export CSV</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="backupJSON()">Backup</button>
       <label class="btn btn-outline btn-sm" style="margin:0; cursor:pointer;">
-        📂 Pulihkan
+        Pulihkan
         <input type="file" accept=".json,.csv,application/json,text/csv" style="display:none" onchange="restoreJSON(event)" />
       </label>
     </div>
@@ -1832,7 +3059,7 @@
         <!-- LEFT PANEL: SEARCH, SCAN, FIXED NUMPAD & CITIZEN PROFILE / REGISTRATION -->
         <div class="card">
           <div class="card-header">
-            <div class="card-title">🔍 Cek NIK / No. KK / Nama Warga</div>
+            <div class="card-title">Cari Warga</div>
             <span class="badge-digit" id="digitCounter">0 / 16 digit</span>
           </div>
           <div class="card-body">
@@ -1840,11 +3067,11 @@
             <!-- Scan & Paste Hero Buttons -->
             <div class="scan-hero-row">
               <button type="button" class="btn-scan-primary" onclick="openScannerModal()">
-                <span style="font-size:18px;">📷</span>
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
                 <span>Scan KTP / KK / QR</span>
               </button>
               <button type="button" class="btn-paste" onclick="pasteFromClipboard()">
-                <span>📋</span> Tempel
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1"/></svg> Tempel
               </button>
             </div>
 
@@ -1870,11 +3097,11 @@
             <!-- Mobile Controls: Toggle Numpad vs Full Keyboard (Android & iPhone) -->
             <div style="display:flex; gap:6px; margin-bottom:8px;" class="mobile-keyboard-bar">
               <button type="button" class="numpad-toggle-mobile" style="margin-bottom:0; flex:1;" id="numpadToggleBtn" onclick="toggleMobileNumpad()">
-                <span>🔢 Keypad Angka</span>
+                <span>Keypad angka</span>
                 <span id="numpadToggleLabel">Sembunyikan ▲</span>
               </button>
-              <button type="button" class="numpad-toggle-mobile" style="margin-bottom:0; width:auto; background:#EFF6FF; border-color:#BFDBFE; color:#1D4ED8;" onclick="focusKeyboardForName()">
-                <span>⌨️ Ketik Nama</span>
+              <button type="button" class="numpad-toggle-mobile numpad-toggle-alt" style="margin-bottom:0; width:auto;" onclick="focusKeyboardForName()">
+                <span>Ketik nama</span>
               </button>
             </div>
 
@@ -1889,9 +3116,9 @@
               <button type="button" class="num-key" onclick="appendDigit('7')">7</button>
               <button type="button" class="num-key" onclick="appendDigit('8')">8</button>
               <button type="button" class="num-key" onclick="appendDigit('9')">9</button>
-              <button type="button" class="num-key key-clr" onclick="finishCitizenSession()">RESET</button>
+              <button type="button" class="num-key key-clr" onclick="finishCitizenSession()">Reset</button>
               <button type="button" class="num-key" onclick="appendDigit('0')">0</button>
-              <button type="button" class="num-key key-del" onclick="backspaceDigit()">⌫ HAPUS</button>
+              <button type="button" class="num-key key-del" onclick="backspaceDigit()" aria-label="Hapus satu angka">⌫</button>
             </div>
 
             <!-- Name Search Results (ONLY shown when typing letters, rendered BELOW numpad) -->
@@ -1909,10 +3136,10 @@
           <div class="date-toolbar">
             <div class="date-pills">
               <button type="button" class="date-pill-btn active" id="btnDateToday" onclick="setTxDatePreset('today')">
-                📅 Hari Ini
+                Hari ini
               </button>
               <button type="button" class="date-pill-btn" id="btnDateYesterday" onclick="setTxDatePreset('yesterday')">
-                ⏪ Kemarin
+                Kemarin
               </button>
               <input type="date" id="txDateInput" class="date-input-compact" onchange="onManualDateChange()" />
             </div>
@@ -1937,14 +3164,14 @@
               </div>
             </div>
             <button type="button" class="btn-finish-hero" onclick="finishCitizenSession()">
-              <span>✅</span> SELESAI / WARGA BERIKUTNYA
+              Selesai · Warga berikutnya
             </button>
           </div>
 
           <!-- Today's / Selected Date Recent Transactions -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🧾 Riwayat Transaksi (<span id="recentDateLabel">Hari Ini</span>)</div>
+              <div class="card-title">Riwayat transaksi · <span id="recentDateLabel">Hari Ini</span></div>
               <button type="button" class="btn btn-outline btn-sm" onclick="switchView('db')">Lihat Semua →</button>
             </div>
             <div class="card-body" id="recentTxContainer">
@@ -1978,9 +3205,9 @@
       </div>
 
       <!-- Quick Batch Entry for Yesterday's SPHP (No. KK Only) -->
-      <div class="card" style="margin-bottom:12px; border-color:#FCD34D;">
-        <div class="card-header" style="background:#FFFBEB;">
-          <div class="card-title" style="color:#92400E;">⏪ Input Cepat Susulan SPHP Kemarin (Cukup Nama &amp; No. KK)</div>
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-header">
+          <div class="card-title">Input susulan SPHP <span class="card-sub">Cukup nama &amp; No. KK</span></div>
         </div>
         <div class="card-body">
           <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:8px; align-items:end;">
@@ -2018,14 +3245,14 @@
       <!-- Multi-Device Sync & Export Card -->
       <div class="card" style="margin-bottom:12px;">
         <div class="card-header">
-          <div class="card-title">☁️ Sinkronisasi Multi-Device &amp; Export Excel</div>
+          <div class="card-title">Data &amp; sinkronisasi</div>
         </div>
         <div class="card-body" style="display:flex; flex-wrap:wrap; gap:8px;">
-          <button type="button" class="btn btn-green" onclick="openCloudModal()">☁️ Atur Database Bersama (Multi-Device)</button>
-          <button type="button" class="btn btn-outline" onclick="exportCSV()">📥 Download Rekap Excel (.CSV)</button>
-          <button type="button" class="btn btn-outline" onclick="backupJSON()">💾 Simpan Cadangan (.JSON)</button>
+          <button type="button" class="btn btn-green" onclick="openCloudModal()">Pengaturan database</button>
+          <button type="button" class="btn btn-outline" onclick="exportCSV()">Download rekap (.CSV)</button>
+          <button type="button" class="btn btn-outline" onclick="backupJSON()">Simpan cadangan (.JSON)</button>
           <label class="btn btn-outline" style="margin:0; cursor:pointer;">
-            📂 Pulihkan dari File (.JSON)
+            Pulihkan dari file
             <input type="file" accept=".json,.csv,application/json,text/csv" style="display:none" onchange="restoreJSON(event)" />
           </label>
         </div>
@@ -2034,12 +3261,12 @@
       <!-- Citizen Database Card -->
       <div class="card" style="margin-bottom:12px;">
         <div class="card-header">
-          <div class="card-title">👥 Database Warga Terdaftar <span class="badge-digit ok" id="citizenCountBadge">0</span></div>
+          <div class="card-title">Warga terdaftar <span class="badge-digit ok" id="citizenCountBadge">0</span></div>
           <input type="text" id="dbSearchInput" class="form-input" style="max-width:230px; min-height:36px; font-size:12.5px;" placeholder="Cari nama / NIK / KK..." oninput="renderDatabaseTab()" />
         </div>
         <div class="card-body">
           <div id="genericWargaAlertBox" style="display:none; background:#FEF2F2; border:1px solid #FECACA; border-radius:8px; padding:9px 11px; margin-bottom:9px; font-size:12px; color:#991B1B;">
-            <strong>⚠️ Terdeteksi <span id="genericWargaCountText">0</span> data bernama "Warga":</strong> Ketuk tombol <strong>✏️ Edit</strong> pada baris terkait untuk mengisi nama aslinya, atau klik <strong>📂 Pulihkan</strong> untuk mengimpor ulang file backup (.JSON / .CSV) agar nama asli terisi otomatis.
+            <strong>⚠️ Terdeteksi <span id="genericWargaCountText">0</span> data bernama "Warga":</strong> Ketuk tombol <strong>Edit</strong> pada baris terkait untuk mengisi nama aslinya, atau klik <strong>Pulihkan</strong> untuk mengimpor ulang file backup (.JSON / .CSV) agar nama asli terisi otomatis.
           </div>
           <div class="filter-pills">
             <button type="button" class="filter-chip active" id="fltAll" onclick="setDbFilter('all')">Semua Data</button>
@@ -2055,7 +3282,7 @@
       <!-- Full Transaction History Card -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title">📜 Seluruh Riwayat Pengambilan Sembako <span class="badge-digit ok" id="txCountBadge">0</span></div>
+          <div class="card-title">Riwayat pengambilan <span class="badge-digit ok" id="txCountBadge">0</span></div>
           <input type="text" id="txSearchInput" class="form-input" style="max-width:230px; min-height:36px; font-size:12.5px;" placeholder="Cari riwayat warga / tanggal / barang..." oninput="renderDatabaseTab()" />
         </div>
         <div class="card-body" id="fullTxTableContainer"></div>
@@ -2087,7 +3314,7 @@
   <div class="modal-backdrop" id="editTxModal">
     <div class="modal-card" style="max-width:420px;">
       <div class="modal-header">
-        <div style="font-weight:800; font-size:14px;">✏️ Koreksi / Edit Transaksi</div>
+        <div style="font-weight:700; font-size:15px;">Koreksi / Edit Transaksi</div>
         <button type="button" class="modal-close" onclick="closeEditTxModal()">✕</button>
       </div>
       <div class="card-body">
@@ -2130,7 +3357,7 @@
   <div class="modal-backdrop" id="editCitizenModal">
     <div class="modal-card" style="max-width:440px;">
       <div class="modal-header">
-        <div style="font-weight:800; font-size:14px;">✏️ Edit Data Warga Terdaftar</div>
+        <div style="font-weight:700; font-size:15px;">Edit Data Warga Terdaftar</div>
         <button type="button" class="modal-close" onclick="closeEditCitizenModal()">✕</button>
       </div>
       <div class="card-body">
@@ -2199,7 +3426,7 @@
   <div class="modal-backdrop" id="policyModal">
     <div class="modal-card" style="max-width:420px;">
       <div class="modal-header">
-        <div style="font-weight:800; font-size:14px;">🌾 Kebijakan Kuota Beras SPHP Koperasi</div>
+        <div style="font-weight:700; font-size:15px;">Kebijakan Kuota Beras SPHP Koperasi</div>
         <button type="button" class="modal-close" onclick="closePolicyModal()">✕</button>
       </div>
       <div class="card-body">
@@ -2208,7 +3435,7 @@
           <input type="text" id="policyOrgNameInput" class="form-input" placeholder="Contoh: KDKMP Salamnunggal" />
         </div>
 
-        <div style="background:#F0FDF4; border:1px solid #86EFAC; border-radius:8px; padding:10px; font-size:12.5px; color:#166534; margin-bottom:12px;">
+        <div class="note-box note-text">
           Atur nama koperasi &amp; batas maksimal pembelian <strong>Beras SPHP (kemasan 5 kg)</strong> per Nomor KK dalam 1 hari sesuai kebijakan masing-masing koperasi.
         </div>
 
@@ -2247,7 +3474,7 @@
   <div class="modal-backdrop" id="cloudModal">
     <div class="modal-card" style="max-width:540px;">
       <div class="modal-header">
-        <div style="font-weight:800; font-size:14px;">☁️ Database Bersama Multi-Device (Google Sheets)</div>
+        <div style="font-weight:700; font-size:15px;">Database Google Sheets</div>
         <button type="button" class="modal-close" onclick="closeCloudModal()">✕</button>
       </div>
       <div class="card-body">
@@ -2255,20 +3482,20 @@
           Status: Mode Lokal (data masih tersimpan di perangkat ini saja).
         </div>
 
-        <div style="background:#F0FDF4; border:1.5px solid #86EFAC; border-radius:9px; padding:10px; margin-bottom:12px; font-size:12px; color:#166534; line-height:1.5;">
-          <div style="font-weight:800; font-size:12.5px; margin-bottom:4px;">Langkah 1: Siapkan Google Sheets</div>
+        <div class="note-box">
+          <div class="note-title">Langkah 1 · Siapkan Google Sheets</div>
           Buka project Apps Script (dari <strong>script.google.com</strong> atau Google Sheet → <strong>Ekstensi → Apps Script</strong>) → hapus isi <code>Code.gs</code> → tempel kode dari tombol di bawah → ganti <code>PIN_RAHASIA</code> dengan 6 angka → Simpan → jalankan fungsi <code>persiapan</code> sekali (beri izin) → <strong>Deploy → Deployment baru → Aplikasi web</strong> (Akses: Siapa saja) → salin URL <code>/exec</code>.
           <button type="button" class="btn btn-green btn-sm" style="width:100%; margin-top:8px;" onclick="copyAppsScriptTemplate()">
-            📋 Salin Kode Apps Script
+            Salin Kode Apps Script
           </button>
         </div>
 
-        <div style="font-weight:800; font-size:12.5px; color:#166534; margin-bottom:6px;">Langkah 2: Sambungkan aplikasi ini</div>
+        <div class="section-label">Langkah 2 · Sambungkan aplikasi ini</div>
 
         <div class="form-group">
           <label class="form-label">
             <span>URL Web App Google Apps Script (Google Sheets) *</span>
-            <span id="detectedProviderBadge" style="color:#0369A1;">Auto-Deteksi</span>
+            <span id="detectedProviderBadge" style="color:var(--text-light);">Auto-Deteksi</span>
           </label>
           <input
             type="url"
@@ -2296,43 +3523,43 @@
 
         <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
           <button type="button" class="btn btn-green" style="flex:1; min-height:44px;" onclick="saveCloudConfig()">
-            🔗 Hubungkan &amp; Sinkronkan
+            Hubungkan &amp; Sinkronkan
           </button>
           <button type="button" class="btn btn-outline" style="min-height:44px;" onclick="pushAllLocalToCloud()">
-            ⬆️ Kirim Data Lokal ke Cloud
+            Kirim Data Lokal ke Cloud
           </button>
         </div>
 
         <!-- Share Links: Cloud Sync OR Local-Only (No Database Access) -->
-        <div id="shareLocalBox" style="background:#F0F9FF; border:1.5px solid #BAE6FD; border-radius:9px; padding:10px; margin-bottom:10px;">
-          <div style="font-weight:800; font-size:12.5px; color:#075985; margin-bottom:4px;">
-            🔒 Bagikan Link Mode Lokal (Tanpa Akses ke Database Cloud):
+        <div id="shareLocalBox" class="note-box">
+          <div class="note-title">
+            Bagikan Link Mode Lokal (Tanpa Akses ke Database Cloud):
           </div>
-          <div style="font-size:11.5px; color:#0369A1; margin-bottom:8px;">
+          <div class="note-text">
             Koperasi lain tetap bisa memakai aplikasi ini dengan <strong>link database kosong (Mode Lokal)</strong>. Data mereka tersimpan mandiri di perangkat masing-masing dan tidak tercampur dengan database KDKMP Salamnunggal.
           </div>
-          <button type="button" class="btn btn-outline btn-sm" style="width:100%; border-color:#7DD3FC; color:#0369A1;" onclick="copyLocalOnlyLink()">
-            🔗 Salin Link Aplikasi Mode Lokal (Tanpa Database)
+          <button type="button" class="btn btn-outline btn-sm" style="width:100%;" onclick="copyLocalOnlyLink()">
+            Salin Link Aplikasi Mode Lokal (Tanpa Database)
           </button>
         </div>
 
-        <div id="shareWorkerBox" style="display:none; background:#ECFDF5; border:1.5px solid #86EFAC; border-radius:9px; padding:10px; margin-bottom:12px;">
-          <div style="font-weight:800; font-size:12.5px; color:#166534; margin-bottom:4px;">
-            📲 Link Otomatis untuk HP / Tablet Internal (Tersambung Database):
+        <div id="shareWorkerBox" class="note-box" style="display:none;">
+          <div class="note-title">
+            Link Otomatis untuk HP / Tablet Internal (Tersambung Database):
           </div>
-          <div style="font-size:11.5px; color:#15803D; margin-bottom:8px;">
+          <div class="note-text">
             Khusus tim internal toko Anda: begitu diklik, perangkat langsung tersambung ke database bersama yang sama. <strong>PIN tidak ikut di link</strong>, beri tahu PIN ke petugas secara terpisah (jangan di grup).
           </div>
           <button type="button" class="btn btn-green btn-sm" style="width:100%;" onclick="copyWorkerMagicLink()">
-            📋 Salin Link Koneksi Database (Internal Tim)
+            Salin Link Koneksi Database (Internal Tim)
           </button>
         </div>
 
         <button type="button" id="logoutBtn" class="btn btn-outline" style="display:none; width:100%; min-height:42px; margin-bottom:10px; border-color:var(--danger-border); color:var(--danger);" onclick="logoutApp()">
-          🚪 Keluar (kunci aplikasi di HP ini)
+          Keluar (kunci aplikasi di HP ini)
         </button>
 
-        <div style="background:#F8FAFC; border:1px solid var(--excel-border); border-radius:8px; padding:9px 11px; font-size:12px; color:#475569; line-height:1.45;">
+        <div class="note-text" style="margin:4px 2px 0 2px;">
           PIN login diminta saat aplikasi dibuka. Tempel URL Web App Google Apps Script (<code>.../exec</code>), pastikan <strong>Kode Toko / Gerai</strong> sama di semua perangkat, lalu tekan <strong>Hubungkan &amp; Sinkronkan</strong>.
         </div>
       </div>
@@ -2343,7 +3570,7 @@
   <div class="modal-backdrop" id="scannerModal">
     <div class="modal-card mobile-full-modal">
       <div class="modal-header">
-        <div style="font-weight:800; font-size:14px;">📷 Pemindai Kamera (QR Warga &amp; 16 Digit KTP/KK)</div>
+        <div style="font-weight:700; font-size:15px;">Pemindai Kamera (QR Warga &amp; 16 Digit KTP/KK)</div>
         <button type="button" class="modal-close" onclick="closeScannerModal()">✕</button>
       </div>
 
@@ -2392,7 +3619,7 @@
   <div class="modal-backdrop" id="qrCardModal">
     <div class="modal-card" style="max-width:400px;">
       <div class="modal-header">
-        <div style="font-weight:800; font-size:14px;">🪪 Kartu QR Warga KDKMP</div>
+        <div style="font-weight:700; font-size:15px;">Kartu QR Warga KDKMP</div>
         <button type="button" class="modal-close" onclick="closeQrCardModal()">✕</button>
       </div>
       <div class="card-body" style="text-align:center;">
@@ -3850,7 +5077,7 @@ function jsonOut_(obj) {
                 <h3 class="citizen-name">${escapeHtml(selected.name)}</h3>
                 <div class="status-tags">${statusHtml}</div>
               </div>
-              <button type="button" class="btn btn-outline btn-sm" onclick="openQrCardModal('${selected.id}')">🪪 Kartu QR</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="openQrCardModal('${selected.id}')">Kartu QR</button>
             </div>
             <div class="id-grid">
               <div class="id-cell">
@@ -3875,15 +5102,15 @@ function jsonOut_(obj) {
         const savedSecond = (draftRegState.primaryDigits === digits) ? draftRegState.secondId : '';
         container.innerHTML = `
           <div class="reg-box">
-            <div style="font-weight:800; font-size:13px; color:#166534; margin-bottom:6px;">
-              🆕 Nomor Baru (${digits}) — Pilih Jenis Nomor:
+            <div class="reg-title">
+              Warga baru <span class="reg-digits">${digits}</span><div class="reg-hint">Nomor ini NIK atau No. KK?</div>
             </div>
             <div class="reg-switch-row">
               <button type="button" class="reg-type-btn ${isNikMode ? 'active' : ''}" onclick="setRegMode('nik')">
-                🪪 Angka ini No. NIK<br><span style="font-size:10px; font-weight:500;">(Bisa beli Minyak tanpa KK)</span>
+                No. NIK<br><span class="reg-type-sub">Bisa beli minyak tanpa KK</span>
               </button>
               <button type="button" class="reg-type-btn ${!isNikMode ? 'active' : ''}" onclick="setRegMode('kk')">
-                👪 Angka ini No. KK<br><span style="font-size:10px; font-weight:500;">(Bisa beli SPHP &amp; Gas)</span>
+                No. KK<br><span class="reg-type-sub">Bisa beli SPHP &amp; gas</span>
               </button>
             </div>
 
@@ -3896,7 +5123,7 @@ function jsonOut_(obj) {
               <div class="form-group">
                 <label class="form-label">
                   <span>No. KK (16 Digit)</span>
-                  <span style="color:#15803D;">Opsional jika hanya beli Minyak</span>
+                  <span class="form-label-hint">Opsional jika hanya beli Minyak</span>
                 </label>
                 <input type="tel" maxlength="16" id="regSecondIdInput" class="form-input mono-input" placeholder="Kosongkan jika tidak bawa KK..." oninput="captureDraftRegForm('${digits}')" />
               </div>
@@ -3904,14 +5131,14 @@ function jsonOut_(obj) {
               <div class="form-group">
                 <label class="form-label">
                   <span>No. NIK Pembeli (16 Digit)</span>
-                  <span style="color:#15803D;">Opsional jika hanya bawa KK</span>
+                  <span class="form-label-hint">Opsional jika hanya bawa KK</span>
                 </label>
                 <input type="tel" maxlength="16" id="regSecondIdInput" class="form-input mono-input" placeholder="Kosongkan jika tidak dicatat..." oninput="captureDraftRegForm('${digits}')" />
               </div>
             `}
 
             <button type="button" class="btn btn-green" style="width:100%; min-height:46px; font-size:13.5px;" onclick="registerNewCitizen('${digits}')">
-              ✅ Simpan &amp; Buka Kuota Sembako
+              Simpan &amp; buka kuota
             </button>
           </div>
         `;
@@ -4447,9 +5674,10 @@ function jsonOut_(obj) {
 
       saveTransactionsLocal();
       queueCloudSync('put', `transactions/${editingTxObj.id}`, editingTxObj);
+      const savedLabel = editingTxObj.itemLabel; // closeEditTxModal() mengosongkan editingTxObj
       closeEditTxModal();
       refreshAllUI();
-      showToast(`✅ Koreksi disimpan: ${editingTxObj.itemLabel}`);
+      showToast(`✅ Koreksi disimpan: ${savedLabel}`);
     }
 
     let pendingConfirmCallback = null;
@@ -4651,7 +5879,7 @@ function jsonOut_(obj) {
                     ${t.nik ? `NIK:${t.nik}` : ''}${t.nik && t.kk ? '<br>' : ''}${t.kk ? `KK:${t.kk}` : ''}
                   </td>
                   <td style="white-space:nowrap;">
-                    <button type="button" class="btn btn-edit-outline btn-sm" onclick="openEditTxModal('${t.id}')">✏️ Edit</button>
+                    <button type="button" class="btn btn-edit-outline btn-sm" onclick="openEditTxModal('${t.id}')">Edit</button>
                     <button type="button" class="btn btn-danger-outline btn-sm" onclick="deleteTransaction('${t.id}')">Hapus</button>
                   </td>
                 </tr>
@@ -4854,10 +6082,10 @@ function jsonOut_(obj) {
                       <td style="font-family:monospace;">${hasKk ? c.kk : '-'}</td>
                       <td>${badge}</td>
                       <td style="white-space:nowrap;">
-                        <button type="button" class="btn btn-green btn-sm" onclick="openCitizenInPos('${c.id}')">Kasir</button>
+                        <button type="button" class="btn btn-outline btn-sm" onclick="openCitizenInPos('${c.id}')">Layani</button>
                         <button type="button" class="btn btn-outline btn-sm" onclick="openQrCardModal('${c.id}')">QR</button>
-                        <button type="button" class="btn btn-edit-outline btn-sm" onclick="openEditCitizenModal('${c.id}')">✏️ Edit</button>
-                        <button type="button" class="btn btn-danger-outline btn-sm" onclick="deleteCitizen('${c.id}')">🗑️ Hapus</button>
+                        <button type="button" class="btn btn-edit-outline btn-sm" onclick="openEditCitizenModal('${c.id}')">Edit</button>
+                        <button type="button" class="btn btn-danger-outline btn-sm" onclick="deleteCitizen('${c.id}')">Hapus</button>
                       </td>
                     </tr>
                   `;
@@ -4910,7 +6138,7 @@ function jsonOut_(obj) {
                       ${t.nik ? `NIK:${t.nik}` : ''}${t.nik && t.kk ? '<br>' : ''}${t.kk ? `KK:${t.kk}` : ''}
                     </td>
                     <td style="white-space:nowrap;">
-                      <button type="button" class="btn btn-edit-outline btn-sm" onclick="openEditTxModal('${t.id}')">✏️ Edit</button>
+                      <button type="button" class="btn btn-edit-outline btn-sm" onclick="openEditTxModal('${t.id}')">Edit</button>
                       <button type="button" class="btn btn-danger-outline btn-sm" onclick="deleteTransaction('${t.id}')">Hapus</button>
                     </td>
                   </tr>
