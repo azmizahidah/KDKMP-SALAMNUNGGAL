@@ -1764,7 +1764,7 @@
     <div class="fx-left">
       <span class="fx-badge">fx</span>
       <span class="formula-text" id="formulaStatus">
-        =KUOTA_KDKMP(Minyak:"1L/Hari/NIK"; Gas_3kg:"1Tbg/Minggu/KK"; Beras_SPHP:"5Pack/Minggu/KK")
+        =KUOTA_KDKMP(Minyak:"1L/Hari/NIK"; Gas_3kg:"1Tbg/Minggu/KK"; Beras_SPHP:"5Pack/Hari/KK")
       </span>
     </div>
     <span style="font-size:11px; font-weight:700; color:#475569; flex-shrink:0;" id="clockBadge">--:-- WIB</span>
@@ -1953,7 +1953,7 @@
           <div class="stat-num" id="statGasWeek">0 Tbg</div>
         </div>
         <div class="stat-box">
-          <div class="stat-label">Beras SPHP Minggu Ini</div>
+          <div class="stat-label">Beras SPHP Hari Ini</div>
           <div class="stat-num" id="statRiceWeek">0 Pack</div>
         </div>
       </div>
@@ -2190,12 +2190,12 @@
         </div>
 
         <div style="background:#F0FDF4; border:1px solid #86EFAC; border-radius:8px; padding:10px; font-size:12.5px; color:#166534; margin-bottom:12px;">
-          Atur nama koperasi &amp; batas maksimal pembelian <strong>Beras SPHP (kemasan 5 kg)</strong> per Nomor KK dalam 1 minggu sesuai kebijakan masing-masing koperasi.
+          Atur nama koperasi &amp; batas maksimal pembelian <strong>Beras SPHP (kemasan 5 kg)</strong> per Nomor KK dalam 1 hari sesuai kebijakan masing-masing koperasi.
         </div>
 
         <div class="form-group">
           <label class="form-label">
-            <span>Batas Maksimal SPHP per KK / Minggu</span>
+            <span>Batas Maksimal SPHP per KK / Hari</span>
             <span id="policyKgPreview" style="color:var(--excel-green);">= 25 kg</span>
           </label>
           <div class="sphp-stepper" style="margin-bottom:8px;">
@@ -3490,7 +3490,7 @@ function jsonOut_(obj) {
           .reduce((sum, t) => sum + Number(t.qty || 0), 0);
 
         riceUsed = transactions
-          .filter(t => t.id !== excludeTxId && t.item === 'beras' && getWeekKey(t.date) === targetWeek && t.kk === citizen.kk)
+          .filter(t => t.id !== excludeTxId && t.item === 'beras' && t.date === refDateStr && t.kk === citizen.kk)
           .reduce((sum, t) => sum + Number(t.qty || 0), 0);
       }
 
@@ -4110,7 +4110,7 @@ function jsonOut_(obj) {
         container.innerHTML = `
           ${buildCommodityCardSkeleton('🛢️', 'Minyak Goreng (Minyakita)', '1 Liter / Hari per NIK', '1 Liter')}
           ${buildCommodityCardSkeleton('🔥', 'Gas LPG 3kg', '1 Tabung / Minggu per KK', '1 Tabung')}
-          ${buildCommodityCardSkeleton('🌾', 'Beras SPHP', `${sphpMaxPerWeek} Pack / Minggu per KK`, `${sphpMaxPerWeek} Pack`)}
+          ${buildCommodityCardSkeleton('🌾', 'Beras SPHP', `${sphpMaxPerWeek} Pack / Hari per KK`, `${sphpMaxPerWeek} Pack`)}
         `;
         return;
       }
@@ -4240,7 +4240,7 @@ function jsonOut_(obj) {
           <div>
             <div class="item-top">
               <span class="item-icon">🌾</span>
-              <button type="button" class="item-rule-badge" style="border:1px solid #CBD5E1; cursor:pointer;" onclick="openPolicyModal()" title="Klik untuk ubah batas kuota SPHP">${q.riceMax} Pack / Minggu / KK ⚙️</button>
+              <button type="button" class="item-rule-badge" style="border:1px solid #CBD5E1; cursor:pointer;" onclick="openPolicyModal()" title="Klik untuk ubah batas kuota SPHP">${q.riceMax} Pack / Hari / KK ⚙️</button>
             </div>
             ${ricePartialBadgeHtml}
             <h4 class="item-name">Beras SPHP</h4>
@@ -4729,7 +4729,7 @@ function jsonOut_(obj) {
 
       const q = getQuotaStatusForCitizen(c, dateVal);
       if (q.riceRem < qty) {
-        showToast(`Sisa kuota SPHP minggu tersebut untuk KK ini hanya ${q.riceRem} pack.`, 'error');
+        showToast(`Sisa kuota SPHP hari tersebut untuk KK ini hanya ${q.riceRem} pack.`, 'error');
         return;
       }
 
@@ -4767,7 +4767,7 @@ function jsonOut_(obj) {
       document.getElementById('statGasWeek').textContent =
         transactions.filter(t => t.item === 'gas' && getWeekKey(t.date) === curWeek).reduce((s, t) => s + Number(t.qty || 0), 0) + ' Tbg';
       document.getElementById('statRiceWeek').textContent =
-        transactions.filter(t => t.item === 'beras' && getWeekKey(t.date) === curWeek).reduce((s, t) => s + Number(t.qty || 0), 0) + ' Pack';
+        transactions.filter(t => t.item === 'beras' && t.date === today).reduce((s, t) => s + Number(t.qty || 0), 0) + ' Pack';
 
       const genericCount = citizens.filter(c => isGenericWargaName(c.name)).length;
       const alertBox = document.getElementById('genericWargaAlertBox');
@@ -5887,7 +5887,7 @@ function jsonOut_(obj) {
       if (rib) rib.textContent = sphpMaxPerWeek;
       const fx = document.getElementById('formulaStatus');
       if (fx) {
-        fx.textContent = `=KUOTA_${safeSlug.toUpperCase()}(Minyak:"1L/Hari/NIK"; Gas_3kg:"1Tbg/Minggu/KK"; Beras_SPHP:"${sphpMaxPerWeek}Pack/Minggu/KK")`;
+        fx.textContent = `=KUOTA_${safeSlug.toUpperCase()}(Minyak:"1L/Hari/NIK"; Gas_3kg:"1Tbg/Minggu/KK"; Beras_SPHP:"${sphpMaxPerWeek}Pack/Hari/KK")`;
       }
       syncBatchSphpDropdown();
       const kkInput = document.getElementById('batchSphpKk');
@@ -5914,7 +5914,7 @@ function jsonOut_(obj) {
       const inp = document.getElementById('policySphpMaxInput');
       const val = Math.max(1, Math.min(50, parseInt(inp.value, 10) || 1));
       const lbl = document.getElementById('policyKgPreview');
-      if (lbl) lbl.textContent = `= ${val * 5} kg / KK / Minggu`;
+      if (lbl) lbl.textContent = `= ${val * 5} kg / KK / Hari`;
     }
 
     function changePolicySphpInput(delta) {
@@ -5946,7 +5946,7 @@ function jsonOut_(obj) {
       notifyLocalTabs();
       closePolicyModal();
       refreshAllUI();
-      showToast(`✅ Disimpan (${orgName}): Kuota SPHP maks ${sphpMaxPerWeek} Pack (${sphpMaxPerWeek * 5} kg) / KK / Minggu.`);
+      showToast(`✅ Disimpan (${orgName}): Kuota SPHP maks ${sphpMaxPerWeek} Pack (${sphpMaxPerWeek * 5} kg) / KK / Hari.`);
     }
 
     function refreshAllUI() {
