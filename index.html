@@ -3275,6 +3275,7 @@
       </button>
     </div>
     <div class="sheet-quick-actions">
+      <a class="btn btn-outline btn-sm spreadsheet-link" href="#" target="_blank" rel="noopener" style="display:none;">Spreadsheet ↗</a>
       <button type="button" class="btn btn-outline btn-sm" onclick="openCloudModal()">Cloud</button>
       <button type="button" class="btn btn-outline btn-sm" onclick="exportCSV()">Export CSV</button>
       <button type="button" class="btn btn-outline btn-sm" onclick="backupJSON()">Backup</button>
@@ -3496,7 +3497,8 @@
           <div class="card-title">Data &amp; sinkronisasi</div>
         </div>
         <div class="card-body" style="display:flex; flex-wrap:wrap; gap:8px;">
-          <button type="button" class="btn btn-green" onclick="openCloudModal()">Pengaturan database</button>
+          <a class="btn btn-green spreadsheet-link" href="#" target="_blank" rel="noopener" style="display:none;">Buka Google Spreadsheet ↗</a>
+          <button type="button" class="btn btn-outline" onclick="openCloudModal()">Pengaturan database</button>
           <button type="button" class="btn btn-outline" onclick="exportCSV()">Download rekap (.CSV)</button>
           <button type="button" class="btn btn-outline" onclick="backupJSON()">Simpan cadangan (.JSON)</button>
           <label class="btn btn-outline" style="margin:0; cursor:pointer;">
@@ -3949,6 +3951,19 @@
     // Jika diisi, semua HP otomatis tersambung dan cukup login dengan PIN.
     // Aman ditaruh di sini: tanpa PIN yang benar, URL ini tidak bisa membaca/menulis data.
     const DATABASE_URL = 'https://script.google.com/macros/s/AKfycby-Nj2XCc64Qg_Bg5HQFSPGAVETpfdopFFGgXh4CvPK4wtK1Ta3sceBo_LRuaIPkSoo/exec';
+
+    // Link Google Spreadsheet database (untuk dibuka pengurus). Hanya akun Google yang diberi
+    // akses yang bisa membukanya, jadi aman ditaruh di sini selama Sheet tidak dibagikan publik.
+    // Kosongkan untuk menyembunyikan tombol "Spreadsheet".
+    const SPREADSHEET_URL = '';
+
+    function initSpreadsheetLinks() {
+      const ok = /^https:\/\/docs\.google\.com\/spreadsheets\//.test(SPREADSHEET_URL);
+      document.querySelectorAll('.spreadsheet-link').forEach(a => {
+        a.href = ok ? SPREADSHEET_URL : '#';
+        a.style.display = ok ? '' : 'none';
+      });
+    }
 
     // Cloud Sync state
     let cloudConfig = { dbUrl: '', storeCode: 'kdkmp-salamnunggal' };
@@ -7907,6 +7922,7 @@ function jsonOut_(obj) {
         updateCloudBadgeUI('local', 'Mode Lokal');
       }
 
+      initSpreadsheetLinks();
       initCreditWatermarkGuard();
     })();
 
