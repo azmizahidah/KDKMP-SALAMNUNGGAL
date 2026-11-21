@@ -7,8 +7,8 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Kasir%20Kuota%20KDKMP%20Selagedang%22%2C%22short_name%22%3A%22Kasir%20KDKMP%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23F1F5F9%22%2C%22theme_color%22%3A%22%23107C41%22%7D" />
-  <title>Kasir Kuota Sembako — KDKMP Selagedang</title>
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Kasir%20Kuota%20KDKMP%20Salamnunggal%22%2C%22short_name%22%3A%22Kasir%20KDKMP%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23F1F5F9%22%2C%22theme_color%22%3A%22%23107C41%22%7D" />
+  <title>Kasir Kuota Sembako — KDKMP Salamnunggal</title>
   <!-- Offline-capable QR & OCR libraries (graceful fallback if offline) -->
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
@@ -1663,7 +1663,7 @@
       <div class="excel-icon">X</div>
       <div class="brand-text">
         <div class="brand-title" id="brandFileTitle">Kasir_Kuota_KDKMP.xlsx</div>
-        <div class="brand-sub" id="brandOrgSub" onclick="openPolicyModal()" style="cursor:pointer;" title="Klik untuk ubah nama koperasi & kuota SPHP">KDKMP Selagedang • Multi-Device POS</div>
+        <div class="brand-sub" id="brandOrgSub" onclick="openPolicyModal()" style="cursor:pointer;" title="Klik untuk ubah nama koperasi & kuota SPHP">KDKMP Salamnunggal • Multi-Device POS</div>
       </div>
     </div>
     <div class="ribbon-actions">
@@ -2107,7 +2107,7 @@
       <div class="card-body">
         <div class="form-group">
           <label class="form-label"><span>Nama Koperasi / Gerai</span></label>
-          <input type="text" id="policyOrgNameInput" class="form-input" placeholder="Contoh: KDKMP Selagedang" />
+          <input type="text" id="policyOrgNameInput" class="form-input" placeholder="Contoh: KDKMP Salamnunggal" />
         </div>
 
         <div style="background:#F0FDF4; border:1px solid #86EFAC; border-radius:8px; padding:10px; font-size:12.5px; color:#166534; margin-bottom:12px;">
@@ -2149,7 +2149,7 @@
   <div class="modal-backdrop" id="cloudModal">
     <div class="modal-card" style="max-width:540px;">
       <div class="modal-header">
-        <div style="font-weight:800; font-size:14px;">☁️ Database Bersama Multi-Device (Google Sheets / Firebase)</div>
+        <div style="font-weight:800; font-size:14px;">☁️ Database Bersama Multi-Device (Google Sheets)</div>
         <button type="button" class="modal-close" onclick="closeCloudModal()">✕</button>
       </div>
       <div class="card-body">
@@ -2159,7 +2159,7 @@
 
         <div class="form-group">
           <label class="form-label">
-            <span>URL Server Database (Google Apps Script atau Firebase) *</span>
+            <span>URL Web App Google Apps Script (Google Sheets) *</span>
             <span id="detectedProviderBadge" style="color:#0369A1;">Auto-Deteksi</span>
           </label>
           <input
@@ -2167,7 +2167,7 @@
             id="cloudDbUrlInput"
             class="form-input mono-input"
             style="font-size:12px;"
-            placeholder="Tempel link https://script.google.com/macros/s/.../exec atau Firebase..."
+            placeholder="Tempel link https://script.google.com/macros/s/.../exec"
             oninput="previewCloudProvider()"
           />
         </div>
@@ -2180,8 +2180,21 @@
             type="text"
             id="cloudStoreCodeInput"
             class="form-input mono-input"
-            value="kdkmp-selagedang"
-            placeholder="kdkmp-selagedang"
+            value="kdkmp-salamnunggal"
+            placeholder="kdkmp-salamnunggal"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            <span>🔒 PIN Database (sama dengan PIN_RAHASIA di Apps Script) *</span>
+          </label>
+          <input
+            type="password"
+            id="cloudPinInput"
+            class="form-input mono-input"
+            autocomplete="off"
+            placeholder="Masukkan PIN"
           />
         </div>
 
@@ -2200,7 +2213,7 @@
             🔒 Bagikan Link Mode Lokal (Tanpa Akses ke Database Cloud):
           </div>
           <div style="font-size:11.5px; color:#0369A1; margin-bottom:8px;">
-            Koperasi lain tetap bisa memakai aplikasi ini dengan <strong>link database kosong (Mode Lokal)</strong>. Data mereka tersimpan mandiri di perangkat masing-masing dan tidak tercampur dengan database KDKMP Selagedang.
+            Koperasi lain tetap bisa memakai aplikasi ini dengan <strong>link database kosong (Mode Lokal)</strong>. Data mereka tersimpan mandiri di perangkat masing-masing dan tidak tercampur dengan database KDKMP Salamnunggal.
           </div>
           <button type="button" class="btn btn-outline btn-sm" style="width:100%; border-color:#7DD3FC; color:#0369A1;" onclick="copyLocalOnlyLink()">
             🔗 Salin Link Aplikasi Mode Lokal (Tanpa Database)
@@ -2212,7 +2225,7 @@
             📲 Link Otomatis untuk HP / Tablet Internal (Tersambung Database):
           </div>
           <div style="font-size:11.5px; color:#15803D; margin-bottom:8px;">
-            Khusus tim internal toko Anda: begitu diklik, perangkat langsung tersambung ke database bersama yang sama.
+            Khusus tim internal toko Anda: begitu diklik, perangkat langsung tersambung ke database bersama yang sama. <strong>PIN tidak ikut di link</strong>, beri tahu PIN ke petugas secara terpisah (jangan di grup).
           </div>
           <button type="button" class="btn btn-green btn-sm" style="width:100%;" onclick="copyWorkerMagicLink()">
             📋 Salin Link Koneksi Database (Internal Tim)
@@ -2220,7 +2233,7 @@
         </div>
 
         <div style="background:#F8FAFC; border:1px solid var(--excel-border); border-radius:8px; padding:9px 11px; font-size:12px; color:#475569; line-height:1.45;">
-          Tempel URL Web App Google Apps Script (<code>.../exec</code>) atau URL Realtime Database Firebase, pastikan <strong>Kode Toko / Gerai</strong> sama di semua perangkat, lalu tekan <strong>Hubungkan &amp; Sinkronkan</strong>.
+          Tempel URL Web App Google Apps Script (<code>.../exec</code>), pastikan <strong>Kode Toko / Gerai</strong> sama di semua perangkat, lalu tekan <strong>Hubungkan &amp; Sinkronkan</strong>.
         </div>
       </div>
     </div>
@@ -2284,7 +2297,7 @@
       </div>
       <div class="card-body" style="text-align:center;">
         <div id="qrCardPrintable" style="border:2px solid var(--excel-green); border-radius:12px; padding:16px; background:#FFFFFF;">
-          <div id="qrCardOrgHeader" style="font-size:11px; font-weight:800; color:var(--excel-green); letter-spacing:0.5px;">KDKMP SELAGEDANG — KARTU KUOTA SEMBAKO</div>
+          <div id="qrCardOrgHeader" style="font-size:11px; font-weight:800; color:var(--excel-green); letter-spacing:0.5px;">KDKMP SALAMNUNGGAL — KARTU KUOTA SEMBAKO</div>
           <div style="font-size:17px; font-weight:800; margin:6px 0 2px 0;" id="qrCardName">-</div>
           <div style="font-family:monospace; font-size:12px; color:#475569; margin-bottom:10px;" id="qrCardIds">-</div>
           <img id="qrCardImg" alt="QR Warga" style="width:190px; height:190px; border:1px solid #E2E8F0; border-radius:8px; padding:6px; background:#FFF;" />
@@ -2317,7 +2330,7 @@
     let selectedDateStr = getTodayStr();
     let sphpQty = 1;
     let sphpMaxPerWeek = 5;
-    let orgName = 'KDKMP Selagedang';
+    let orgName = 'KDKMP Salamnunggal';
     let regMode = 'nik'; // 'nik' | 'kk'
     let dbFilter = 'all';
     let mobileNumpadVisible = true;
@@ -2329,7 +2342,7 @@
     let editTxMaxAllowed = 5;
 
     // Cloud Sync state
-    let cloudConfig = { dbUrl: '', storeCode: 'kdkmp-selagedang' };
+    let cloudConfig = { dbUrl: '', storeCode: 'kdkmp-salamnunggal' };
     let cloudConnected = false;
     let cloudEventSource = null;
     let cloudPollTimer = null;
@@ -2384,7 +2397,9 @@
 
         const rawCloud = localStorage.getItem(STORAGE_CLOUD_CFG);
         if (rawCloud) {
-          cloudConfig = Object.assign({ dbUrl: '', storeCode: 'kdkmp-selagedang' }, JSON.parse(rawCloud));
+          cloudConfig = Object.assign({ dbUrl: '', storeCode: 'kdkmp-salamnunggal' }, JSON.parse(rawCloud));
+          // Konfigurasi lama non-Google-Sheets (mis. Firebase) tidak didukung lagi → kembali ke Mode Lokal
+          if (cloudConfig.dbUrl && detectCloudProvider(cloudConfig.dbUrl) !== 'gas') cloudConfig.dbUrl = '';
         }
 
         const rawPolicy = localStorage.getItem(STORAGE_POLICY_CFG);
@@ -2406,7 +2421,7 @@
           cloudConfig.dbUrl = '';
           localStorage.setItem(STORAGE_CLOUD_CFG, JSON.stringify(cloudConfig));
           window.history.replaceState({}, document.title, window.location.pathname);
-        } else if (urlDb) {
+        } else if (urlDb && detectCloudProvider(urlDb) === 'gas') {
           cloudConfig.dbUrl = normalizeFirebaseUrl(urlDb);
           if (urlToko) cloudConfig.storeCode = sanitizeStoreCode(urlToko);
           localStorage.setItem(STORAGE_CLOUD_CFG, JSON.stringify(cloudConfig));
@@ -2597,10 +2612,25 @@
     /* =====================================================================
        MULTI-DEVICE REAL-TIME CLOUD SYNC (GOOGLE SHEETS APPS SCRIPT + FIREBASE)
     ===================================================================== */
-    const APPS_SCRIPT_TEMPLATE = `// KODE SINKRONISASI MULTI-DEVICE KDKMP SELAGEDANG (GOOGLE SHEETS)
+    const APPS_SCRIPT_TEMPLATE = `// KODE SINKRONISASI MULTI-DEVICE KDKMP SALAMNUNGGAL (GOOGLE SHEETS)
+// ================================================================
+// WAJIB: Ganti PIN di bawah ini (minimal 6 karakter, disarankan 8+
+// campuran huruf & angka). PIN yang sama dimasukkan di aplikasi kasir.
+// Setelah mengganti PIN: Deploy > Kelola deployment > Edit > Versi baru.
+// ================================================================
+var PIN_RAHASIA = 'GANTI-PIN-INI';
+
+function cekPin_(pin) {
+  if (!PIN_RAHASIA || PIN_RAHASIA === 'GANTI-PIN-INI' || PIN_RAHASIA.length < 6) return false;
+  return String(pin || '') === PIN_RAHASIA;
+}
+
+// Akses langsung lewat browser tidak menampilkan data apa pun.
 function doGet(e) {
-  var toko = (e && e.parameter && e.parameter.toko) ? e.parameter.toko : 'kdkmp-selagedang';
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  return jsonOut_({ ok: false, error: 'AKSES_DITOLAK' });
+}
+
+function bacaData_(ss, toko) {
   var dbSheet = getOrCreateSheet_(ss, 'RAW_DB_' + toko, ['Key', 'JSON', 'UpdatedAt']);
   var rows = dbSheet.getDataRange().getValues();
   var citizens = {};
@@ -2637,14 +2667,36 @@ function doGet(e) {
       }
     });
   }
-  return jsonOut_({ ok: true, citizens: citizens, transactions: transactions });
+  return { ok: true, citizens: citizens, transactions: transactions };
 }
 
 function doPost(e) {
-  var payload = JSON.parse(e.postData.contents);
-  var toko = payload.toko || 'kdkmp-selagedang';
-  var ops = payload.ops || [];
+  var payload;
+  try {
+    payload = JSON.parse(e.postData.contents);
+  } catch (err) {
+    return jsonOut_({ ok: false, error: 'PERMINTAAN_TIDAK_VALID' });
+  }
+  if (!cekPin_(payload.pin)) {
+    Utilities.sleep(1500);
+    return jsonOut_({ ok: false, error: 'PIN_SALAH' });
+  }
+  var toko = String(payload.toko || 'kdkmp-salamnunggal').replace(/[^a-z0-9_-]/g, '-');
   var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (payload.action === 'pull') {
+    return jsonOut_(bacaData_(ss, toko));
+  }
+  var lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    simpanOps_(ss, toko, payload.ops || []);
+  } finally {
+    lock.releaseLock();
+  }
+  return jsonOut_({ ok: true });
+}
+
+function simpanOps_(ss, toko, ops) {
   var dbSheet = getOrCreateSheet_(ss, 'RAW_DB_' + toko, ['Key', 'JSON', 'UpdatedAt']);
   var data = dbSheet.getDataRange().getValues();
   var rowMap = {};
@@ -2669,7 +2721,6 @@ function doPost(e) {
     }
   });
   syncReadableSheets_(ss, dbSheet);
-  return jsonOut_({ ok: true });
 }
 
 function syncReadableSheets_(ss, dbSheet) {
@@ -2721,8 +2772,7 @@ function jsonOut_(obj) {
       const u = String(url || '').toLowerCase();
       if (!u) return 'none';
       if (u.includes('script.google.com') || u.includes('script.googleusercontent.com')) return 'gas';
-      if (u.includes('console.firebase.google.com')) return 'firebase_console_wrong';
-      if (u.includes('firebasedatabase.app') || u.includes('firebaseio.com')) return 'firebase';
+      // Hanya Google Sheets (Apps Script) yang didukung.
       return 'unknown';
     }
 
@@ -2738,8 +2788,40 @@ function jsonOut_(obj) {
       return u;
     }
 
+    // Semua komunikasi ke Google Sheets lewat POST + PIN. Apps Script selalu membalas
+    // HTTP 200, jadi keberhasilan wajib dicek dari isi JSON (ok: true).
+    async function gasRequest(body) {
+      const resp = await fetch(normalizeFirebaseUrl(cloudConfig.dbUrl), {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(Object.assign({
+          toko: sanitizeStoreCode(cloudConfig.storeCode),
+          pin: cloudConfig.pin || ''
+        }, body))
+      });
+      if (!resp.ok) throw new Error('HTTP_' + resp.status);
+      let data;
+      try {
+        data = await resp.json();
+      } catch (e) {
+        throw new Error('BUKAN_JSON');
+      }
+      if (!data || data.ok !== true) {
+        throw new Error((data && data.error) || 'GAGAL');
+      }
+      return data;
+    }
+
+    function handlePinRejected() {
+      stopCloudRealtimeListener();
+      cloudConnected = false;
+      updateCloudBadgeUI('error', 'PIN Salah');
+      showToast('🔒 PIN database salah atau belum diisi. Masukkan PIN yang benar di menu Cloud.', 'error');
+      if (!document.getElementById('cloudModal').classList.contains('open')) openCloudModal();
+    }
+
     function sanitizeStoreCode(code) {
-      return String(code || 'kdkmp-selagedang').trim().toLowerCase().replace(/[^a-z0-9_-]/g, '-') || 'kdkmp-selagedang';
+      return String(code || 'kdkmp-salamnunggal').trim().toLowerCase().replace(/[^a-z0-9_-]/g, '-') || 'kdkmp-salamnunggal';
     }
 
     function getStoreBaseEndpoint() {
@@ -2801,16 +2883,12 @@ function jsonOut_(obj) {
       if (provider === 'gas') {
         const batch = [...pendingSyncOps];
         try {
-          const resp = await fetch(normalizeFirebaseUrl(cloudConfig.dbUrl), {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ toko: code, ops: batch })
-          });
-          if (!resp.ok) throw new Error('HTTP ' + resp.status);
+          await gasRequest({ ops: batch });
           pendingSyncOps.splice(0, batch.length);
           savePendingOps();
           updateCloudBadgeUI('online', 'Sheets Aktif');
         } catch (err) {
+          if (err.message === 'PIN_SALAH') { handlePinRejected(); return; }
           console.warn('GAS push deferred:', err);
           updateCloudBadgeUI('error', `Tertunda (${pendingSyncOps.length})`);
         }
@@ -2846,23 +2924,19 @@ function jsonOut_(obj) {
       const code = sanitizeStoreCode(cloudConfig.storeCode);
 
       try {
-        let fetchUrl = '';
+        let data;
         if (provider === 'gas') {
-          const rawUrl = normalizeFirebaseUrl(cloudConfig.dbUrl);
-          const sep = rawUrl.includes('?') ? '&' : '?';
-          fetchUrl = `${rawUrl}${sep}toko=${encodeURIComponent(code)}&t=${Date.now()}`;
+          data = await gasRequest({ action: 'pull' });
         } else {
-          fetchUrl = `${getStoreBaseEndpoint()}.json`;
-        }
-
-        const resp = await fetch(fetchUrl, { cache: 'no-store' });
-        if (!resp.ok) {
-          if (resp.status === 401 || resp.status === 403) {
-            throw new Error('PERMISSION_DENIED');
+          const resp = await fetch(`${getStoreBaseEndpoint()}.json`, { cache: 'no-store' });
+          if (!resp.ok) {
+            if (resp.status === 401 || resp.status === 403) {
+              throw new Error('PERMISSION_DENIED');
+            }
+            throw new Error('HTTP_' + resp.status);
           }
-          throw new Error('HTTP_' + resp.status);
+          data = await resp.json();
         }
-        const data = await resp.json();
         mergeCloudSnapshot(data);
         cloudConnected = true;
         updateCloudBadgeUI('online', provider === 'gas' ? 'Sheets Aktif' : 'Cloud Aktif');
@@ -2874,11 +2948,14 @@ function jsonOut_(obj) {
         return true;
       } catch (err) {
         console.error('Cloud fetch error:', err);
+        if (err.message === 'PIN_SALAH') { handlePinRejected(); return false; }
         cloudConnected = false;
         updateCloudBadgeUI('error', 'Cloud Offline');
         if (!silent) {
           if (err.message === 'PERMISSION_DENIED') {
-            showToast('Akses ditolak (401): Pastikan Rules Firebase memakai Test Mode (true) atau Apps Script diset "Siapa saja (Anyone)".', 'error');
+            showToast('Akses ditolak (401): Pastikan Web App Apps Script diset akses "Siapa saja (Anyone)".', 'error');
+          } else if (err.message === 'BUKAN_JSON' || err.message === 'PERMINTAAN_TIDAK_VALID') {
+            showToast('Server tidak merespons dengan benar. Pastikan kode Apps Script terbaru sudah di-deploy ulang.', 'error');
           } else {
             showToast('Gagal terhubung ke server. Periksa URL & koneksi internet Anda.', 'error');
           }
@@ -2992,7 +3069,8 @@ function jsonOut_(obj) {
 
     function openCloudModal() {
       document.getElementById('cloudDbUrlInput').value = cloudConfig.dbUrl || '';
-      document.getElementById('cloudStoreCodeInput').value = cloudConfig.storeCode || 'kdkmp-selagedang';
+      document.getElementById('cloudStoreCodeInput').value = cloudConfig.storeCode || 'kdkmp-salamnunggal';
+      document.getElementById('cloudPinInput').value = cloudConfig.pin || '';
       previewCloudProvider();
       refreshCloudModalStatus();
       document.getElementById('cloudModal').classList.add('open');
@@ -3025,6 +3103,7 @@ function jsonOut_(obj) {
     async function saveCloudConfig() {
       const rawUrl = document.getElementById('cloudDbUrlInput').value;
       const rawCode = document.getElementById('cloudStoreCodeInput').value;
+      const pin = document.getElementById('cloudPinInput').value.trim();
       const cleanUrl = normalizeFirebaseUrl(rawUrl);
       const cleanCode = sanitizeStoreCode(rawCode);
 
@@ -3039,12 +3118,17 @@ function jsonOut_(obj) {
       }
 
       const provider = detectCloudProvider(cleanUrl);
-      if (provider === 'firebase_console_wrong') {
-        showToast('Itu link halaman Console Firebase, bukan link Database! Gunakan URL Google Apps Script (/exec) atau URL .firebasedatabase.app', 'error');
+      if (provider !== 'gas') {
+        showToast('Link tidak dikenali. Gunakan URL Web App Google Apps Script (https://script.google.com/macros/s/.../exec).', 'error');
         return;
       }
 
-      cloudConfig = { dbUrl: cleanUrl, storeCode: cleanCode };
+      if (pin.length < 6) {
+        showToast('Masukkan PIN Database (minimal 6 karakter).', 'warn');
+        return;
+      }
+
+      cloudConfig = { dbUrl: cleanUrl, storeCode: cleanCode, pin };
       localStorage.setItem(STORAGE_CLOUD_CFG, JSON.stringify(cloudConfig));
       refreshCloudModalStatus();
 
@@ -3059,7 +3143,7 @@ function jsonOut_(obj) {
 
     async function pushAllLocalToCloud() {
       if (!cloudConfig.dbUrl) {
-        showToast('Isi & simpan URL Google Apps Script / Firebase terlebih dahulu.', 'warn');
+        showToast('Isi & simpan URL Google Apps Script terlebih dahulu.', 'warn');
         return;
       }
       if (citizens.length === 0 && transactions.length === 0) {
@@ -3075,12 +3159,7 @@ function jsonOut_(obj) {
           const ops = [];
           citizens.forEach(c => ops.push({ op: 'put', relPath: `citizens/${c.id}`, data: c }));
           transactions.forEach(t => ops.push({ op: 'put', relPath: `transactions/${t.id}`, data: t }));
-          const resp = await fetch(normalizeFirebaseUrl(cloudConfig.dbUrl), {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ toko: code, ops })
-          });
-          if (!resp.ok) throw new Error('HTTP ' + resp.status);
+          await gasRequest({ ops });
           showToast(`⬆️ Berhasil mengirim ${citizens.length} warga & ${transactions.length} transaksi ke Google Sheets!`);
           pullFullCloudSnapshot(true);
           return;
@@ -3101,6 +3180,7 @@ function jsonOut_(obj) {
         showToast(`⬆️ Berhasil mengirim ${citizens.length} warga & ${transactions.length} transaksi ke Cloud!`);
         pullFullCloudSnapshot(true);
       } catch (err) {
+        if (err.message === 'PIN_SALAH') { handlePinRejected(); return; }
         showToast('Gagal mengirim data ke Cloud. Cek koneksi internet & pengaturan akses.', 'error');
       }
     }
@@ -4649,7 +4729,7 @@ function jsonOut_(obj) {
 
     function backupJSON() {
       const payload = {
-        app: 'KDKMP_Selagedang_Kasir_Kuota',
+        app: 'KDKMP_Salamnunggal_Kasir_Kuota',
         exportedAt: new Date().toISOString(),
         citizens,
         transactions
@@ -5633,7 +5713,7 @@ function jsonOut_(obj) {
 
     function savePolicySettings() {
       const orgInp = document.getElementById('policyOrgNameInput');
-      const nextOrg = (orgInp ? orgInp.value : '').trim() || 'KDKMP Selagedang';
+      const nextOrg = (orgInp ? orgInp.value : '').trim() || 'KDKMP Salamnunggal';
       const inp = document.getElementById('policySphpMaxInput');
       const val = parseInt(inp.value, 10);
       if (!val || val < 1 || val > 50) {
