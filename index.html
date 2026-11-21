@@ -3255,7 +3255,7 @@
     <div class="fx-left">
       <span class="fx-badge">fx</span>
       <span class="formula-text" id="formulaStatus">
-        =KUOTA_KDKMP(Minyak:"1L/Hari/NIK"; Gas_3kg:"1Tbg/Minggu/KK"; Beras_SPHP:"5Pack/Hari/KK")
+        =KUOTA_KDKMP(Minyak:"1L/Hari/KK"; Gas_3kg:"1Tbg/Minggu/KK"; Beras_SPHP:"5Pack/Hari/KK")
       </span>
     </div>
     <span style="font-size:11px; font-weight:700; color:#475569; flex-shrink:0;" id="clockBadge">--:-- WIB</span>
@@ -4995,27 +4995,44 @@ function jsonOut_(obj) {
       return `${d.getUTCFullYear()}-W${String(weekNo).padStart(2, '0')}`;
     }
 
+    // Satu keluarga = semua warga dengan No. KK yang sama, beserta seluruh NIK & ID profilnya.
+    // Kuota dihitung per keluarga, jadi anggota lain / profil ganda / transaksi lama tanpa KK
+    // tetap terhitung dan tidak bisa dipakai untuk mengambil melebihi batas.
+    function getHousehold(citizen) {
+      const kk = (citizen && citizen.kk && citizen.kk.length === 16) ? citizen.kk : '';
+      const members = kk ? citizens.filter(c => c.kk === kk) : [];
+      if (citizen && !members.includes(citizen)) members.push(citizen);
+      const ids = new Set();
+      const niks = new Set();
+      members.forEach(m => {
+        if (m.id) ids.add(m.id);
+        if (m.nik && m.nik.length === 16) niks.add(m.nik);
+        (Array.isArray(m.extraNiks) ? m.extraNiks : []).forEach(n => { if (n && n.length === 16) niks.add(n); });
+      });
+      return { kk, ids, niks };
+    }
+
+    function txInHousehold(t, h) {
+      return Boolean(
+        (h.kk && t.kk === h.kk) ||
+        (t.citizenId && h.ids.has(t.citizenId)) ||
+        (t.nik && h.niks.has(t.nik))
+      );
+    }
+
     function getQuotaStatusForCitizen(citizen, refDateStr, excludeTxId = null) {
       const targetWeek = getWeekKey(refDateStr);
+      const h = getHousehold(citizen);
+      const used = (item, inPeriod) => transactions
+        .filter(t => t && t.id !== excludeTxId && t.item === item && inPeriod(t) && txInHousehold(t, h))
+        .reduce((sum, t) => sum + Number(t.qty || 0), 0);
 
-      let oilUsed = 0;
-      if (citizen && citizen.nik && citizen.nik.length === 16) {
-        oilUsed = transactions
-          .filter(t => t.id !== excludeTxId && t.item === 'minyak' && t.date === refDateStr && t.nik === citizen.nik)
-          .reduce((sum, t) => sum + Number(t.qty || 0), 0);
-      }
-
-      let gasUsed = 0;
-      let riceUsed = 0;
-      if (citizen && citizen.kk && citizen.kk.length === 16) {
-        gasUsed = transactions
-          .filter(t => t.id !== excludeTxId && t.item === 'gas' && getWeekKey(t.date) === targetWeek && t.kk === citizen.kk)
-          .reduce((sum, t) => sum + Number(t.qty || 0), 0);
-
-        riceUsed = transactions
-          .filter(t => t.id !== excludeTxId && t.item === 'beras' && t.date === refDateStr && t.kk === citizen.kk)
-          .reduce((sum, t) => sum + Number(t.qty || 0), 0);
-      }
+      // Minyak: 1 L per hari per KK (atau per NIK jika warga belum punya KK)
+      const oilUsed = (h.kk || h.niks.size) ? used('minyak', t => t.date === refDateStr) : 0;
+      // Gas: 1 tabung per minggu per KK (otomatis juga maksimal 1 per hari)
+      const gasUsed = h.kk ? used('gas', t => getWeekKey(t.date) === targetWeek) : 0;
+      // Beras SPHP: batas pack per hari per KK
+      const riceUsed = h.kk ? used('beras', t => t.date === refDateStr) : 0;
 
       return {
         oilUsed,
@@ -5631,7 +5648,7 @@ function jsonOut_(obj) {
 
       if (!c) {
         container.innerHTML = `
-          ${buildCommodityCardSkeleton('<img src="img/minyakita.webp" alt="Minyakita" width="54" height="54" />', 'Minyak Goreng (Minyakita)', '1 Liter / Hari per NIK', '1 Liter')}
+          ${buildCommodityCardSkeleton('<img src="img/minyakita.webp" alt="Minyakita" width="54" height="54" />', 'Minyak Goreng (Minyakita)', '1 Liter / Hari per KK', '1 Liter')}
           ${buildCommodityCardSkeleton('<img src="img/lpg-3kg.webp" alt="LPG 3 kg" width="54" height="54" />', 'Gas LPG 3kg', '1 Tabung / Minggu per KK', '1 Tabung')}
           ${buildCommodityCardSkeleton('<img src="img/beras-sphp-5kg.webp" alt="Beras SPHP Bulog 5 kg" width="54" height="54" />', 'Beras SPHP', `${sphpMaxPerWeek} Pack / Hari per KK`, `${sphpMaxPerWeek} Pack`)}
         `;
@@ -5715,7 +5732,7 @@ function jsonOut_(obj) {
           <div>
             <div class="item-top">
               <span class="item-icon" title="Minyakita"><img src="img/minyakita.webp" alt="Minyakita" width="54" height="54" /></span>
-              <span class="item-rule-badge">1L / Hari / NIK</span>
+              <span class="item-rule-badge">1L / Hari / KK</span>
             </div>
             <h4 class="item-name">Minyak Goreng</h4>
             <div class="item-sub">Minyakita Subsidi</div>
@@ -5824,20 +5841,48 @@ function jsonOut_(obj) {
       return `Beras SPHP (${qty} Pack)`;
     }
 
-    function recordTransaction(itemKey, qty) {
-      const c = citizens.find(x => x.id === selectedCitizenId);
+    // Ambil data terbaru dari Google Sheets sebelum mencatat, supaya transaksi KK yang sama
+    // dari HP lain (yang belum tersinkron) ikut terhitung. Maksimal menunggu ~4 detik;
+    // jika offline/lambat, pemeriksaan tetap jalan dengan data yang ada di HP ini.
+    async function syncBeforeQuotaCheck() {
+      if (!cloudConfig.dbUrl || !cloudConfig.pin || !navigator.onLine) return;
+      try {
+        await Promise.race([
+          pullFullCloudSnapshot(true),
+          new Promise(resolve => setTimeout(resolve, 4000))
+        ]);
+      } catch (e) { /* tetap lanjut dengan data lokal */ }
+    }
+
+    let recordingInProgress = false;
+
+    async function recordTransaction(itemKey, qty) {
+      if (recordingInProgress) return; // cegah tombol tertekan dua kali
+      const target = citizens.find(x => x.id === selectedCitizenId);
+      if (!target) return;
+      recordingInProgress = true;
+      try {
+        await syncBeforeQuotaCheck();
+        commitTransaction(itemKey, qty, target.id);
+      } finally {
+        recordingInProgress = false;
+      }
+    }
+
+    function commitTransaction(itemKey, qty, citizenId) {
+      const c = citizens.find(x => x.id === citizenId);
       if (!c) return;
 
       const q = getQuotaStatusForCitizen(c, selectedDateStr);
       if (itemKey === 'minyak') {
         if (!c.nik || c.nik.length !== 16) return showToast('Butuh 16 digit No. NIK untuk Minyak Goreng.', 'error');
-        if (q.oilRem < qty) return showToast('Kuota Minyak Goreng hari ini sudah habis!', 'error');
+        if (q.oilRem < qty) return showToast('Kuota Minyak Goreng KK ini hari ini sudah habis (1 L/hari per KK).', 'error');
       } else if (itemKey === 'gas') {
         if (!c.kk || c.kk.length !== 16) return showToast('Butuh 16 digit No. KK untuk Gas LPG 3kg.', 'error');
-        if (q.gasRem < qty) return showToast('Kuota Gas LPG 3kg minggu ini sudah habis!', 'error');
+        if (q.gasRem < qty) return showToast('Kuota Gas LPG 3kg KK ini minggu ini sudah habis!', 'error');
       } else if (itemKey === 'beras') {
         if (!c.kk || c.kk.length !== 16) return showToast('Butuh 16 digit No. KK untuk Beras SPHP.', 'error');
-        if (q.riceRem < qty) return showToast(`Sisa kuota Beras SPHP hanya ${q.riceRem} pack.`, 'error');
+        if (q.riceRem < qty) return showToast(`Sisa kuota Beras SPHP KK ini hari ini hanya ${q.riceRem} pack.`, 'error');
       }
 
       const label = buildItemLabel(itemKey, qty);
@@ -6217,7 +6262,10 @@ function jsonOut_(obj) {
       }
     }
 
-    function submitBatchSphp() {
+    let batchSphpInProgress = false;
+
+    async function submitBatchSphp() {
+      if (batchSphpInProgress) return;
       const kk = cleanDigits(document.getElementById('batchSphpKk').value);
       const name = document.getElementById('batchSphpName').value.trim();
       const qty = Number(document.getElementById('batchSphpQty').value || 1);
@@ -6230,6 +6278,13 @@ function jsonOut_(obj) {
       if (!name) {
         showToast('Nama pembeli wajib diisi.', 'error');
         return;
+      }
+
+      batchSphpInProgress = true;
+      try {
+        await syncBeforeQuotaCheck();
+      } finally {
+        batchSphpInProgress = false;
       }
 
       let c = findCitizenBy16Digit(kk);
@@ -7750,7 +7805,7 @@ function jsonOut_(obj) {
       if (rib) rib.textContent = sphpMaxPerWeek;
       const fx = document.getElementById('formulaStatus');
       if (fx) {
-        fx.textContent = `=KUOTA_${safeSlug.toUpperCase()}(Minyak:"1L/Hari/NIK"; Gas_3kg:"1Tbg/Minggu/KK"; Beras_SPHP:"${sphpMaxPerWeek}Pack/Hari/KK")`;
+        fx.textContent = `=KUOTA_${safeSlug.toUpperCase()}(Minyak:"1L/Hari/KK"; Gas_3kg:"1Tbg/Minggu/KK"; Beras_SPHP:"${sphpMaxPerWeek}Pack/Hari/KK")`;
       }
       syncBatchSphpDropdown();
       const kkInput = document.getElementById('batchSphpKk');
