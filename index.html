@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#107C41" />
+  <meta name="theme-color" content="#C8102E" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Kasir%20Kuota%20KDKMP%20Salamnunggal%22%2C%22short_name%22%3A%22Kasir%20KDKMP%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23F1F5F9%22%2C%22theme_color%22%3A%22%23107C41%22%7D" />
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Kasir%20Kuota%20KDKMP%20Salamnunggal%22%2C%22short_name%22%3A%22Kasir%20KDKMP%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23F1F5F9%22%2C%22theme_color%22%3A%22%23C8102E%22%7D" />
   <title>Kasir Kuota Sembako — KDKMP Salamnunggal</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23C8102E'/%3E%3Cpath d='M12 30 L32 12 L52 30' fill='none' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M18 27 V52 H46 V27' fill='none' stroke='%23fff' stroke-width='6'/%3E%3C/svg%3E" />
   <!-- Offline-capable QR & OCR libraries (graceful fallback if offline) -->
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <style>
     :root {
-      --excel-green: #107C41;
-      --excel-green-dark: #0B5A2F;
-      --excel-green-light: #E8F5EE;
-      --excel-green-mid: #C6E7D4;
+      --brand-red: #C8102E;
+      --brand-red-dark: #9B0C23;
+      --brand-red-light: #FDEEF0;
+      --brand-red-mid: #F6C9D0;
       --excel-border: #D0D7DE;
       --excel-grid: #E2E8F0;
       --bg-app: #F1F5F9;
@@ -72,7 +73,7 @@
       width: 100%;
       max-width: 100%;
       z-index: 60;
-      background: var(--excel-green);
+      background: var(--brand-red);
       color: #FFFFFF;
       padding: calc(8px + var(--safe-top)) 10px 8px 10px;
       display: flex;
@@ -100,19 +101,21 @@
       min-width: 0;
     }
 
-    .excel-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 7px;
+    .brand-logo {
+      width: 46px;
+      height: 38px;
+      border-radius: 8px;
       background: #FFFFFF;
-      color: var(--excel-green);
-      font-weight: 900;
-      font-size: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+
+    .brand-logo svg {
+      width: 40px;
+      height: 30px;
     }
 
     .brand-text {
@@ -221,7 +224,7 @@
       padding: 1px 7px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-weight: 700;
-      color: var(--excel-green);
+      color: var(--brand-red);
       font-size: 11px;
       flex-shrink: 0;
     }
@@ -269,8 +272,8 @@
 
     .sheet-tab.active {
       background: #FFFFFF;
-      color: var(--excel-green);
-      border-top: 3px solid var(--excel-green);
+      color: var(--brand-red);
+      border-top: 3px solid var(--brand-red);
       padding-top: 5px;
     }
 
@@ -347,7 +350,7 @@
     }
 
     .btn-scan-primary {
-      background: linear-gradient(135deg, #107C41 0%, #0B5A2F 100%);
+      background: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-red-dark) 100%);
       color: #FFFFFF;
       border: none;
       border-radius: var(--radius-md);
@@ -395,7 +398,7 @@
       font-size: 16px;
       font-weight: 700;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      border: 2px solid var(--excel-green);
+      border: 2px solid var(--brand-red);
       border-radius: var(--radius-md);
       background: #FFFFFF;
       color: var(--text-main);
@@ -443,8 +446,8 @@
     }
 
     .badge-digit.ok {
-      background: var(--excel-green-light);
-      color: var(--excel-green);
+      background: var(--brand-red-light);
+      color: var(--brand-red);
     }
 
     /* ================= TOUCH NUMPAD (FIXED POSITION — NEVER PUSHED DOWN) ================= */
@@ -488,8 +491,8 @@
     }
 
     .num-key:active {
-      background: var(--excel-green-light);
-      border-color: var(--excel-green);
+      background: var(--brand-red-light);
+      border-color: var(--brand-red);
       transform: translateY(1px);
     }
 
@@ -528,13 +531,13 @@
     }
 
     .search-hit-item:hover, .search-hit-item:active {
-      border-color: var(--excel-green);
-      background: var(--excel-green-light);
+      border-color: var(--brand-red);
+      background: var(--brand-red-light);
     }
 
     /* ================= CITIZEN PROFILE & TWO-WAY REGISTRATION ================= */
     .profile-box {
-      border: 1.5px solid var(--excel-green);
+      border: 1.5px solid var(--brand-red);
       background: #F8FAFC;
       border-radius: var(--radius-md);
       padding: 11px;
@@ -573,9 +576,9 @@
     }
 
     .tag-green {
-      background: var(--excel-green-light);
-      color: var(--excel-green-dark);
-      border: 1px solid var(--excel-green-mid);
+      background: var(--brand-red-light);
+      color: var(--brand-red-dark);
+      border: 1px solid var(--brand-red-mid);
     }
 
     .tag-warn {
@@ -652,7 +655,7 @@
 
     .form-input:focus {
       outline: none;
-      border-color: var(--excel-green);
+      border-color: var(--brand-red);
       box-shadow: 0 0 0 2px rgba(16, 124, 65, 0.15);
     }
 
@@ -689,8 +692,8 @@
     }
 
     .reg-type-btn.active {
-      border-color: var(--excel-green);
-      background: var(--excel-green);
+      border-color: var(--brand-red);
+      background: var(--brand-red);
       color: #FFFFFF;
     }
 
@@ -747,9 +750,9 @@
     }
 
     .date-pill-btn.active {
-      background: var(--excel-green);
+      background: var(--brand-red);
       color: #FFFFFF;
-      border-color: var(--excel-green);
+      border-color: var(--brand-red);
     }
 
     .date-pill-btn.yesterday-active {
@@ -887,7 +890,7 @@
     .quota-rem {
       font-size: 18px;
       font-weight: 800;
-      color: var(--excel-green);
+      color: var(--brand-red);
     }
 
     .quota-rem.partial {
@@ -911,7 +914,7 @@
 
     .progress-fill {
       height: 100%;
-      background: var(--excel-green);
+      background: var(--brand-red);
       border-radius: 999px;
       transition: width 0.25s ease;
     }
@@ -953,7 +956,7 @@
     }
 
     .step-btn:active {
-      background: var(--excel-green-light);
+      background: var(--brand-red-light);
     }
 
     .step-val {
@@ -979,13 +982,13 @@
     }
 
     .btn-tx-ready {
-      background: var(--excel-green);
+      background: var(--brand-red);
       color: #FFFFFF;
       box-shadow: 0 2px 5px rgba(16, 124, 65, 0.25);
     }
 
     .btn-tx-ready:active {
-      background: var(--excel-green-dark);
+      background: var(--brand-red-dark);
       transform: scale(0.99);
     }
 
@@ -1071,12 +1074,12 @@
     }
 
     .btn-green {
-      background: var(--excel-green);
+      background: var(--brand-red);
       color: #FFFFFF;
     }
 
     .btn-green:active {
-      background: var(--excel-green-dark);
+      background: var(--brand-red-dark);
     }
 
     .btn-outline {
@@ -1137,7 +1140,7 @@
     .stat-num {
       font-size: 20px;
       font-weight: 800;
-      color: var(--excel-green);
+      color: var(--brand-red);
       margin-top: 2px;
     }
 
@@ -1218,9 +1221,9 @@
     }
 
     .filter-chip.active {
-      background: var(--excel-green);
+      background: var(--brand-red);
       color: #FFFFFF;
-      border-color: var(--excel-green);
+      border-color: var(--brand-red);
     }
 
         /* ================= TASTEFUL PROTECTED CREDIT WATERMARK ================= */
@@ -1271,7 +1274,7 @@
       position: fixed;
       inset: 0;
       z-index: 500;
-      background: var(--excel-green);
+      background: linear-gradient(180deg, var(--brand-red) 0%, var(--brand-red) 50%, #FFFFFF 50%, #FFFFFF 100%);
       display: none;
       align-items: center;
       justify-content: center;
@@ -1285,7 +1288,8 @@
     .login-card {
       background: #FFFFFF;
       border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-md);
+      border: 1px solid var(--brand-red-mid);
+      box-shadow: 0 10px 30px rgba(155, 12, 35, 0.25);
       width: 100%;
       max-width: 340px;
       padding: 24px 20px;
@@ -1295,7 +1299,7 @@
     .login-card h1 {
       margin: 0 0 4px 0;
       font-size: 18px;
-      color: var(--excel-green-dark);
+      color: var(--brand-red-dark);
     }
 
     .login-pin-input {
@@ -1312,7 +1316,7 @@
 
     .login-pin-input:focus {
       outline: none;
-      border-color: var(--excel-green);
+      border-color: var(--brand-red);
     }
 
     .login-error {
@@ -1340,7 +1344,7 @@
     }
 
     .modal-header {
-      background: var(--excel-green);
+      background: var(--brand-red);
       color: #FFFFFF;
       padding: 12px 14px;
       display: flex;
@@ -1383,9 +1387,9 @@
     }
 
     .scan-mode-btn.active {
-      background: var(--excel-green-light);
-      border-color: var(--excel-green);
-      color: var(--excel-green-dark);
+      background: var(--brand-red-light);
+      border-color: var(--brand-red);
+      color: var(--brand-red-dark);
     }
 
     .viewfinder-box {
@@ -1471,8 +1475,8 @@
       width: 100%;
       min-height: 48px;
       background: #ECFDF5;
-      border: 2px solid var(--excel-green);
-      color: var(--excel-green-dark);
+      border: 2px solid var(--brand-red);
+      color: var(--brand-red-dark);
       border-radius: 9px;
       padding: 8px 12px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -1628,7 +1632,7 @@
         top: calc(50px + var(--safe-top));
         z-index: 40;
         background: #ECFDF5;
-        border: 1.5px solid var(--excel-green);
+        border: 1.5px solid var(--brand-red);
         border-radius: 10px;
         padding: 8px 10px;
         margin-bottom: 10px;
@@ -1669,8 +1673,8 @@
       }
 
       .bnav-btn.active {
-        color: var(--excel-green);
-        background: var(--excel-green-light);
+        color: var(--brand-red);
+        background: var(--brand-red-light);
       }
 
       .bnav-icon {
@@ -1714,10 +1718,25 @@
 </head>
 <body>
 
+  <!-- LOGO KOPDES MERAH PUTIH (dipakai ulang lewat <use href="#logoKopdes">) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="logoKopdes" viewBox="0 0 136 100">
+      <g fill="none" stroke="#C8102E" stroke-width="7" stroke-linejoin="miter" stroke-linecap="square">
+        <path d="M8 50 L40 20 L66 44" />
+        <path d="M16 44 V92 H128 V62" />
+      </g>
+      <line x1="40" y1="21" x2="40" y2="3" stroke="#C8102E" stroke-width="3" />
+      <path d="M40 3 L55 7.5 L40 12 Z" fill="#C8102E" />
+      <text x="66" y="50" fill="#C8102E" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="25">KOP</text>
+      <text x="62" y="76" fill="#C8102E" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="25">DES</text>
+      <text x="63" y="87" textLength="57" lengthAdjust="spacingAndGlyphs" fill="#C8102E" font-family="Arial, sans-serif" font-weight="700" font-size="9">MERAH PUTIH</text>
+    </symbol>
+  </svg>
+
   <!-- LAYAR LOGIN PIN -->
   <div class="login-screen" id="loginScreen">
     <form class="login-card" onsubmit="event.preventDefault(); submitLogin();">
-      <div style="font-size:36px;">🔒</div>
+      <svg viewBox="0 0 136 100" style="width:140px; height:103px;" aria-label="Logo Kopdes Merah Putih"><use href="#logoKopdes" /></svg>
       <h1>KDKMP Salamnunggal</h1>
       <div style="font-size:13px; color:var(--text-muted);">Kasir Kuota Sembako • Masukkan PIN 6 angka</div>
       <input
@@ -1739,9 +1758,9 @@
   <!-- TOP EXCEL RIBBON -->
   <header class="top-ribbon">
     <div class="brand-area">
-      <div class="excel-icon">X</div>
+      <div class="brand-logo" aria-label="Logo Kopdes Merah Putih"><svg aria-hidden="true"><use href="#logoKopdes" /></svg></div>
       <div class="brand-text">
-        <div class="brand-title" id="brandFileTitle">Kasir_Kuota_KDKMP.xlsx</div>
+        <div class="brand-title" id="brandFileTitle">Kasir Kuota Sembako</div>
         <div class="brand-sub" id="brandOrgSub" onclick="openPolicyModal()" style="cursor:pointer;" title="Klik untuk ubah nama koperasi & kuota SPHP">KDKMP Salamnunggal • Multi-Device POS</div>
       </div>
     </div>
@@ -1774,10 +1793,10 @@
   <div class="sheet-tabs-bar">
     <div class="sheet-tabs">
       <button type="button" class="sheet-tab active" id="tabBtnPos" onclick="switchView('pos')">
-        <span>📊</span> Kasir_POS
+        <span>🛒</span> Kasir
       </button>
       <button type="button" class="sheet-tab" id="tabBtnDb" onclick="switchView('db')">
-        <span>🗂️</span> Database_&amp;_Riwayat (<span id="tabDbCount">0</span>)
+        <span>🗂️</span> Database &amp; Riwayat (<span id="tabDbCount">0</span>)
       </button>
     </div>
     <div class="sheet-quick-actions">
@@ -1845,7 +1864,7 @@
 
             <div class="digit-counter-row">
               <span id="searchHintText">Angka: otomatis cek saat 16 digit • Nama: ketik huruf</span>
-              <span id="detectedIdTypeBadge" style="font-weight:700; color:var(--excel-green);"></span>
+              <span id="detectedIdTypeBadge" style="font-weight:700; color:var(--brand-red);"></span>
             </div>
 
             <!-- Mobile Controls: Toggle Numpad vs Full Keyboard (Android & iPhone) -->
@@ -1974,7 +1993,7 @@
               <input type="text" id="batchSphpName" class="form-input" placeholder="Nama warga..." />
             </div>
             <div>
-              <label class="form-label"><span>Jumlah Beras SPHP</span><span id="batchSphpQuotaHint" style="color:var(--excel-green);">Sisa: 5 Pack</span></label>
+              <label class="form-label"><span>Jumlah Beras SPHP</span><span id="batchSphpQuotaHint" style="color:var(--brand-red);">Sisa: 5 Pack</span></label>
               <select id="batchSphpQty" class="form-input">
                 <option value="1">1 Pack (5 kg)</option>
                 <option value="2">2 Pack (10 kg)</option>
@@ -2081,7 +2100,7 @@
         <div class="form-group">
           <label class="form-label">
             <span>Jumlah Pengambilan Baru</span>
-            <span id="editTxMaxHint" style="color:var(--excel-green);">Maks: 5</span>
+            <span id="editTxMaxHint" style="color:var(--brand-red);">Maks: 5</span>
           </label>
           <div class="sphp-stepper" style="margin-bottom:4px;">
             <button type="button" class="step-btn" onclick="changeEditTxQty(-1)">−</button>
@@ -2123,14 +2142,14 @@
         <div class="form-group">
           <label class="form-label">
             <span>No. NIK (16 Digit — untuk Minyak Goreng)</span>
-            <span id="editCitizenNikLen" style="color:var(--excel-green);">0/16</span>
+            <span id="editCitizenNikLen" style="color:var(--brand-red);">0/16</span>
           </label>
           <input type="tel" maxlength="16" id="editCitizenNik" class="form-input mono-input" placeholder="Kosongkan jika belum ada..." oninput="updateEditCitizenDigitCounters()" />
         </div>
         <div class="form-group">
           <label class="form-label">
             <span>No. KK (16 Digit — untuk Gas 3kg &amp; SPHP)</span>
-            <span id="editCitizenKkLen" style="color:var(--excel-green);">0/16</span>
+            <span id="editCitizenKkLen" style="color:var(--brand-red);">0/16</span>
           </label>
           <input type="tel" maxlength="16" id="editCitizenKk" class="form-input mono-input" placeholder="Kosongkan jika belum ada..." oninput="updateEditCitizenDigitCounters()" />
         </div>
@@ -2196,7 +2215,7 @@
         <div class="form-group">
           <label class="form-label">
             <span>Batas Maksimal SPHP per KK / Hari</span>
-            <span id="policyKgPreview" style="color:var(--excel-green);">= 25 kg</span>
+            <span id="policyKgPreview" style="color:var(--brand-red);">= 25 kg</span>
           </label>
           <div class="sphp-stepper" style="margin-bottom:8px;">
             <button type="button" class="step-btn" onclick="changePolicySphpInput(-1)">−</button>
@@ -2377,8 +2396,8 @@
         <button type="button" class="modal-close" onclick="closeQrCardModal()">✕</button>
       </div>
       <div class="card-body" style="text-align:center;">
-        <div id="qrCardPrintable" style="border:2px solid var(--excel-green); border-radius:12px; padding:16px; background:#FFFFFF;">
-          <div id="qrCardOrgHeader" style="font-size:11px; font-weight:800; color:var(--excel-green); letter-spacing:0.5px;">KDKMP SALAMNUNGGAL — KARTU KUOTA SEMBAKO</div>
+        <div id="qrCardPrintable" style="border:2px solid var(--brand-red); border-radius:12px; padding:16px; background:#FFFFFF;">
+          <div id="qrCardOrgHeader" style="font-size:11px; font-weight:800; color:var(--brand-red); letter-spacing:0.5px;">KDKMP SALAMNUNGGAL — KARTU KUOTA SEMBAKO</div>
           <div style="font-size:17px; font-weight:800; margin:6px 0 2px 0;" id="qrCardName">-</div>
           <div style="font-family:monospace; font-size:12px; color:#475569; margin-bottom:10px;" id="qrCardIds">-</div>
           <img id="qrCardImg" alt="QR Warga" style="width:190px; height:190px; border:1px solid #E2E8F0; border-radius:8px; padding:6px; background:#FFF;" />
@@ -5680,12 +5699,12 @@ function jsonOut_(obj) {
         ctx.fillStyle = '#FFFFFF';
         ctx.fill();
         ctx.lineWidth = 5;
-        ctx.strokeStyle = '#107C41';
+        ctx.strokeStyle = '#C8102E';
         ctx.stroke();
 
         // Top green header pill / text
         ctx.textAlign = 'center';
-        ctx.fillStyle = '#107C41';
+        ctx.fillStyle = '#C8102E';
         ctx.font = '800 20px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
         ctx.fillText(orgHeader, W / 2, cardY + 56);
 
@@ -5876,7 +5895,7 @@ function jsonOut_(obj) {
     function updatePolicyUI() {
       const safeSlug = String(orgName || 'KDKMP').trim().replace(/[^a-zA-Z0-9_-]+/g, '_').replace(/^_+|_+$/g, '') || 'KDKMP';
       const titleEl = document.getElementById('brandFileTitle');
-      if (titleEl) titleEl.textContent = `Kasir_Kuota_${safeSlug}.xlsx`;
+      if (titleEl) titleEl.textContent = 'Kasir Kuota Sembako';
       const subEl = document.getElementById('brandOrgSub');
       if (subEl) subEl.textContent = `${orgName} • Multi-Device POS`;
       const qrHdr = document.getElementById('qrCardOrgHeader');
