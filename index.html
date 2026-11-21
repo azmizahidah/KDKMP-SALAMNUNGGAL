@@ -2364,13 +2364,20 @@
 
     .item-icon {
       font-size: 22px;
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
       background: var(--bg-soft);
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .item-icon svg {
+      width: 54px;
+      height: 54px;
+      display: block;
     }
 
     .item-rule-badge {
@@ -2958,6 +2965,51 @@
       <text x="62" y="76" fill="#C8102E" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="25">DES</text>
       <text x="63" y="87" textLength="57" lengthAdjust="spacingAndGlyphs" fill="#C8102E" font-family="Arial, sans-serif" font-weight="700" font-size="9">MERAH PUTIH</text>
     </symbol>
+      <!-- Minyak goreng: kemasan pouch Minyakita 1 L -->
+      <symbol id="icoMinyak" viewBox="0 0 48 48">
+        <defs>
+          <linearGradient id="gMinyak" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#FFF4C2"/>
+            <stop offset="0.35" stop-color="#FCD34D"/>
+            <stop offset="1" stop-color="#E9A70B"/>
+          </linearGradient>
+        </defs>
+        <path d="M12 8 H33 L37 13 V40 Q37 45 32 45 H16 Q11 45 11 40 V12 Z" fill="url(#gMinyak)" stroke="#C98A06" stroke-width="1.2"/>
+        <rect x="11.5" y="7" width="21.5" height="4" rx="1" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="0.8"/>
+        <rect x="30" y="3" width="6" height="6" rx="1.5" fill="#D62828"/>
+        <rect x="31" y="8.5" width="4" height="3" fill="#B91C1C"/>
+        <rect x="13.5" y="17" width="21" height="16" rx="2.5" fill="#FFFFFF"/>
+        <rect x="13.5" y="17" width="21" height="4.5" rx="2" fill="#D62828"/>
+        <text x="24" y="20.4" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="3.1" fill="#FFFFFF">MINYAKITA</text>
+        <text x="24" y="28.5" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="6" fill="#B45309">1 L</text>
+        <text x="24" y="31.6" text-anchor="middle" font-family="Arial, sans-serif" font-size="2.4" fill="#6B7280">Minyak Goreng</text>
+        <path d="M15 37 Q20 35 25 37 T35 37" fill="none" stroke="#FFF7D6" stroke-width="1.2" opacity="0.8"/>
+      </symbol>
+    
+      <!-- Gas LPG 3 kg: tabung melon hijau -->
+      <symbol id="icoGas" viewBox="0 0 48 48">
+        <rect x="21.5" y="2.5" width="5" height="4" rx="1" fill="#6B7280"/>
+        <path d="M15 7 H33 Q35 7 35 9 V15 H13 V9 Q13 7 15 7 Z" fill="#1E9E4A"/>
+        <rect x="18" y="9" width="12" height="4" rx="2" fill="#FFFFFF"/>
+        <rect x="9" y="14" width="30" height="28" rx="13" fill="#22A94F"/>
+        <path d="M13 22 Q14 17 19 16" fill="none" stroke="#7BE0A0" stroke-width="2.2" stroke-linecap="round"/>
+        <rect x="9" y="27" width="30" height="2" fill="#178A3D" opacity="0.6"/>
+        <text x="24" y="25" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="5" fill="#FFFFFF">LPG</text>
+        <text x="24" y="36.5" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="7" fill="#FFFFFF">3 kg</text>
+        <rect x="13" y="40" width="22" height="5" rx="1.5" fill="#178A3D"/>
+      </symbol>
+    
+      <!-- Beras SPHP Bulog 5 kg: karung -->
+      <symbol id="icoBeras" viewBox="0 0 48 48">
+        <path d="M17 5 Q20 8 24 8 Q28 8 31 5 L30 10 H18 Z" fill="#E5E7EB" stroke="#CBD5E1" stroke-width="0.8"/>
+        <path d="M14 10 H34 Q37 10 37.5 13 L39 40 Q39 45 34 45 H14 Q9 45 9 40 L10.5 13 Q11 10 14 10 Z" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+        <text x="24" y="16.5" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="4" fill="#1D4ED8">BULOG</text>
+        <rect x="10.2" y="19" width="27.6" height="10" fill="#1D4ED8"/>
+        <text x="24" y="26.4" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="6.6" fill="#FFFFFF">SPHP</text>
+        <rect x="10" y="29" width="28" height="2.4" fill="#D62828"/>
+        <text x="24" y="35.5" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="3.4" fill="#374151">BERAS MEDIUM</text>
+        <text x="24" y="42" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="5.6" fill="#111827">5 kg</text>
+      </symbol>
   </svg>
 
   <!-- LAYAR LOGIN PIN -->
@@ -5354,9 +5406,9 @@ function jsonOut_(obj) {
 
       if (!c) {
         container.innerHTML = `
-          ${buildCommodityCardSkeleton('🛢️', 'Minyak Goreng (Minyakita)', '1 Liter / Hari per NIK', '1 Liter')}
-          ${buildCommodityCardSkeleton('🔥', 'Gas LPG 3kg', '1 Tabung / Minggu per KK', '1 Tabung')}
-          ${buildCommodityCardSkeleton('🌾', 'Beras SPHP', `${sphpMaxPerWeek} Pack / Hari per KK`, `${sphpMaxPerWeek} Pack`)}
+          ${buildCommodityCardSkeleton('<svg viewBox="0 0 48 48"><use href="#icoMinyak" /></svg>', 'Minyak Goreng (Minyakita)', '1 Liter / Hari per NIK', '1 Liter')}
+          ${buildCommodityCardSkeleton('<svg viewBox="0 0 48 48"><use href="#icoGas" /></svg>', 'Gas LPG 3kg', '1 Tabung / Minggu per KK', '1 Tabung')}
+          ${buildCommodityCardSkeleton('<svg viewBox="0 0 48 48"><use href="#icoBeras" /></svg>', 'Beras SPHP', `${sphpMaxPerWeek} Pack / Hari per KK`, `${sphpMaxPerWeek} Pack`)}
         `;
         return;
       }
@@ -5437,7 +5489,7 @@ function jsonOut_(obj) {
         <div class="${oilCardClass}">
           <div>
             <div class="item-top">
-              <span class="item-icon">🛢️</span>
+              <span class="item-icon" title="Minyakita"><svg viewBox="0 0 48 48"><use href="#icoMinyak" /></svg></span>
               <span class="item-rule-badge">1L / Hari / NIK</span>
             </div>
             <h4 class="item-name">Minyak Goreng</h4>
@@ -5461,7 +5513,7 @@ function jsonOut_(obj) {
         <div class="${gasCardClass}">
           <div>
             <div class="item-top">
-              <span class="item-icon">🔥</span>
+              <span class="item-icon" title="LPG 3 kg"><svg viewBox="0 0 48 48"><use href="#icoGas" /></svg></span>
               <span class="item-rule-badge">1 Tbg / Minggu / KK</span>
             </div>
             <h4 class="item-name">Gas LPG 3kg</h4>
@@ -5485,7 +5537,7 @@ function jsonOut_(obj) {
         <div class="${riceCardClass}">
           <div>
             <div class="item-top">
-              <span class="item-icon">🌾</span>
+              <span class="item-icon" title="Beras SPHP Bulog 5 kg"><svg viewBox="0 0 48 48"><use href="#icoBeras" /></svg></span>
               <button type="button" class="item-rule-badge" style="border:1px solid #CBD5E1; cursor:pointer;" onclick="openPolicyModal()" title="Klik untuk ubah batas kuota SPHP">${q.riceMax} Pack / Hari / KK ⚙️</button>
             </div>
             ${ricePartialBadgeHtml}
