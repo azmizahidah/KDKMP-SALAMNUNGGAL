@@ -3054,6 +3054,115 @@
       flex-direction: column;
     }
 
+    /* Detail warga */
+    .cd-profile {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .cd-name {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+    }
+
+    .cd-ids {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      word-break: break-all;
+    }
+
+    .cd-family {
+      font-size: 12.5px;
+      color: var(--brand-red);
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    .cd-scope {
+      display: inline-flex;
+      background: #ECEDF0;
+      border-radius: 12px;
+      padding: 4px;
+      gap: 2px;
+      margin-bottom: 14px;
+    }
+
+    .cd-totals {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .cd-total {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #FAFAFB;
+      border: 1px solid var(--excel-border);
+      border-radius: 12px;
+      padding: 12px;
+      min-width: 0;
+    }
+
+    .cd-total img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .cd-total-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .cd-total-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 2px;
+    }
+
+    .cd-total-sub {
+      font-size: 11.5px;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .cd-table-wrap {
+      max-height: 340px;
+      overflow-y: auto;
+    }
+
+    .cd-table td.num,
+    .cd-table th.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .cd-empty {
+      text-align: center;
+      padding: 18px;
+      color: var(--text-light);
+      background: #FAFAFB;
+      border-radius: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .cd-totals {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
     /* Tabel warga per No. KK */
     .family-table td {
       vertical-align: top;
@@ -3963,6 +4072,36 @@
   </div>
 
   <!-- ==================== MODAL 4: CITIZEN QR CARD ==================== -->
+  <!-- ==================== MODAL: DETAIL WARGA & RIWAYAT TRANSAKSI ==================== -->
+  <div class="modal-backdrop" id="citizenDetailModal">
+    <div class="modal-card mobile-full-modal" style="max-width:720px;">
+      <div class="modal-header">
+        <div style="font-weight:700; font-size:15px;">Detail Warga</div>
+        <button type="button" class="modal-close" onclick="closeCitizenDetail()">✕</button>
+      </div>
+      <div class="card-body">
+        <div class="cd-profile">
+          <div style="min-width:0;">
+            <div class="cd-name" id="cdName">-</div>
+            <div class="cd-ids" id="cdIds">-</div>
+            <div class="cd-family" id="cdFamily"></div>
+          </div>
+          <button type="button" class="btn btn-green btn-sm" id="cdServeBtn">Layani</button>
+        </div>
+
+        <div class="cd-scope" role="tablist" aria-label="Cakupan riwayat">
+          <button type="button" class="an-seg-btn active" id="cdScopePerson" role="tab" onclick="setCitizenDetailScope('person')">Orang ini</button>
+          <button type="button" class="an-seg-btn" id="cdScopeFamily" role="tab" onclick="setCitizenDetailScope('family')">Seluruh KK</button>
+        </div>
+
+        <div class="cd-totals" id="cdTotals"></div>
+
+        <div class="section-label" style="margin-top:4px;">Riwayat transaksi <span class="card-sub" id="cdTxCount"></span></div>
+        <div id="cdTxList"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-backdrop" id="qrCardModal">
     <div class="modal-card" style="max-width:400px;">
       <div class="modal-header">
@@ -5454,6 +5593,7 @@ function jsonOut_(obj) {
                 <h3 class="citizen-name">${escapeHtml(selected.name)}</h3>
                 <div class="status-tags">${statusHtml}</div>
               </div>
+              <button type="button" class="btn btn-outline btn-sm" onclick="openCitizenDetail('${selected.id}')">Riwayat</button>
               <button type="button" class="btn btn-outline btn-sm" onclick="openQrCardModal('${selected.id}')">Kartu QR</button>
             </div>
             <div class="id-grid">
@@ -6522,6 +6662,7 @@ function jsonOut_(obj) {
                           <span class="family-member-nik">NIK ${hasNik ? c.nik : '-'}</span>
                         </div>
                         <div class="family-member-actions">
+                          <button type="button" class="btn btn-outline btn-sm" onclick="openCitizenDetail('${c.id}')">Detail</button>
                           <button type="button" class="btn btn-outline btn-sm" onclick="openCitizenInPos('${c.id}')">Layani</button>
                           <button type="button" class="btn btn-outline btn-sm" onclick="openQrCardModal('${c.id}')">QR</button>
                           <button type="button" class="btn btn-edit-outline btn-sm" onclick="openEditCitizenModal('${c.id}')">Edit</button>
@@ -6601,6 +6742,128 @@ function jsonOut_(obj) {
     function openCitizenInPos(id) {
       switchView('pos');
       selectCitizen(id);
+    }
+
+    /* =====================================================================
+       DETAIL WARGA: RIWAYAT TRANSAKSI + TOTAL PER KATEGORI
+    ===================================================================== */
+    let detailCitizenId = null;
+    let detailScope = 'person';
+
+    function openCitizenDetail(citizenId) {
+      if (!citizens.some(c => c.id === citizenId)) return;
+      detailCitizenId = citizenId;
+      detailScope = 'person';
+      renderCitizenDetail();
+      document.getElementById('citizenDetailModal').classList.add('open');
+    }
+
+    function closeCitizenDetail() {
+      document.getElementById('citizenDetailModal').classList.remove('open');
+      detailCitizenId = null;
+    }
+
+    function setCitizenDetailScope(scope) {
+      detailScope = scope === 'family' ? 'family' : 'person';
+      renderCitizenDetail();
+    }
+
+    function getCitizenDetailTransactions(c, scope) {
+      if (scope === 'family') {
+        const h = getHousehold(c);
+        return transactions.filter(t => t && txInHousehold(t, h));
+      }
+      const niks = new Set([c.nik, ...(Array.isArray(c.extraNiks) ? c.extraNiks : [])].filter(n => n && n.length === 16));
+      return transactions.filter(t => t && (t.citizenId === c.id || (t.nik && niks.has(t.nik))));
+    }
+
+    function renderCitizenDetail() {
+      const c = citizens.find(x => x.id === detailCitizenId);
+      if (!c) return;
+      const hasKk = c.kk && c.kk.length === 16;
+      const family = hasKk ? citizens.filter(x => x.kk === c.kk && x.id !== c.id) : [];
+      if (!hasKk) detailScope = 'person';
+
+      document.getElementById('cdName').textContent = c.name || '-';
+      document.getElementById('cdIds').textContent = `NIK ${c.nik && c.nik.length === 16 ? c.nik : '-'} · KK ${hasKk ? c.kk : '-'}`;
+      const famEl = document.getElementById('cdFamily');
+      famEl.textContent = family.length ? `Satu KK dengan: ${family.map(f => f.name).join(', ')}` : '';
+      document.getElementById('cdServeBtn').onclick = () => { closeCitizenDetail(); openCitizenInPos(c.id); };
+
+      const famBtn = document.getElementById('cdScopeFamily');
+      famBtn.style.display = hasKk ? '' : 'none';
+      famBtn.textContent = family.length ? `Seluruh KK (${family.length + 1} orang)` : 'Seluruh KK';
+      document.getElementById('cdScopePerson').classList.toggle('active', detailScope === 'person');
+      famBtn.classList.toggle('active', detailScope === 'family');
+
+      const txs = getCitizenDetailTransactions(c, detailScope).slice().sort((a, b) =>
+        String(b.date || '').localeCompare(String(a.date || '')) || String(b.time || '').localeCompare(String(a.time || '')));
+
+      // ---- total per kategori: seluruh waktu & bulan ini ----
+      const monthKey = getTodayStr().slice(0, 7);
+      const sum = (item, onlyMonth) => txs
+        .filter(t => t.item === item && (!onlyMonth || String(t.date || '').startsWith(monthKey)))
+        .reduce((s, t) => s + Number(t.qty || 0), 0);
+      const cats = [
+        { item: 'minyak', label: 'Minyak goreng', img: 'img/minyakita.webp', unit: 'L', kg: 0 },
+        { item: 'gas', label: 'Gas LPG 3 kg', img: 'img/lpg-3kg.webp', unit: 'tabung', kg: 0 },
+        { item: 'beras', label: 'Beras SPHP', img: 'img/beras-sphp-5kg.webp', unit: 'pack', kg: 5 }
+      ];
+      const totalsEl = document.getElementById('cdTotals');
+      totalsEl.textContent = '';
+      cats.forEach(cat => {
+        const all = sum(cat.item, false), month = sum(cat.item, true);
+        const tile = document.createElement('div');
+        tile.className = 'cd-total';
+        const img = document.createElement('img');
+        img.src = cat.img; img.alt = ''; img.width = 40; img.height = 40;
+        const body = document.createElement('div');
+        const l = document.createElement('div'); l.className = 'cd-total-label'; l.textContent = cat.label;
+        const v = document.createElement('div'); v.className = 'cd-total-value';
+        v.textContent = `${formatNum(all)} ${cat.unit}` + (cat.kg ? ` · ${formatNum(all * cat.kg)} kg` : '');
+        const m = document.createElement('div'); m.className = 'cd-total-sub';
+        m.textContent = `Bulan ini: ${formatNum(month)} ${cat.unit}`;
+        body.append(l, v, m);
+        tile.append(img, body);
+        totalsEl.append(tile);
+      });
+
+      // ---- daftar riwayat ----
+      document.getElementById('cdTxCount').textContent = `· ${txs.length} transaksi`;
+      const list = document.getElementById('cdTxList');
+      list.textContent = '';
+      if (!txs.length) {
+        const empty = document.createElement('div');
+        empty.className = 'cd-empty';
+        empty.textContent = 'Belum ada transaksi.';
+        list.append(empty);
+        return;
+      }
+      const wrap = document.createElement('div');
+      wrap.className = 'table-wrap table-scroll-compact cd-table-wrap';
+      const table = document.createElement('table');
+      table.className = 'excel-table cd-table';
+      const showName = detailScope === 'family';
+      table.innerHTML = `<thead><tr><th>Tanggal</th><th>Jam</th>${showName ? '<th>Nama</th>' : ''}<th>Barang</th><th class="num">Jumlah</th></tr></thead>`;
+      const tbody = document.createElement('tbody');
+      const unitOf = { minyak: 'L', gas: 'tabung', beras: 'pack' };
+      const labelOf = { minyak: 'Minyak goreng', gas: 'Gas LPG 3 kg', beras: 'Beras SPHP' };
+      txs.forEach(t => {
+        const tr = document.createElement('tr');
+        const cells = [formatDateIndo(t.date), t.time || '-'];
+        if (showName) cells.push(t.name || '-');
+        cells.push(labelOf[t.item] || t.itemLabel || t.item, `${formatNum(t.qty)} ${unitOf[t.item] || ''}`);
+        cells.forEach((val, i) => {
+          const td = document.createElement('td');
+          td.textContent = val;
+          if (i === cells.length - 1) td.className = 'num';
+          tr.append(td);
+        });
+        tbody.append(tr);
+      });
+      table.append(tbody);
+      wrap.append(table);
+      list.append(wrap);
     }
 
     /* =====================================================================
@@ -7994,6 +8257,9 @@ function jsonOut_(obj) {
         renderDatabaseTab();
       }
       renderAnalytics();
+      if (detailCitizenId && document.getElementById('citizenDetailModal').classList.contains('open')) {
+        renderCitizenDetail();
+      }
     }
 
     // Boot initialization
