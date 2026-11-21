@@ -2187,14 +2187,18 @@
 
         <div class="form-group">
           <label class="form-label">
-            <span>🔒 PIN Database (sama dengan PIN_RAHASIA di Apps Script) *</span>
+            <span>🔒 PIN Database 6 Angka (sama dengan PIN_RAHASIA di Apps Script) *</span>
           </label>
           <input
             type="password"
             id="cloudPinInput"
             class="form-input mono-input"
             autocomplete="off"
-            placeholder="Masukkan PIN"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="6"
+            placeholder="••••••"
+            oninput="this.value = this.value.replace(/\D/g, '').slice(0, 6)"
           />
         </div>
 
@@ -2614,15 +2618,29 @@
     ===================================================================== */
     const APPS_SCRIPT_TEMPLATE = `// KODE SINKRONISASI MULTI-DEVICE KDKMP SALAMNUNGGAL (GOOGLE SHEETS)
 // ================================================================
-// WAJIB: Ganti PIN di bawah ini (minimal 6 karakter, disarankan 8+
-// campuran huruf & angka). PIN yang sama dimasukkan di aplikasi kasir.
+// WAJIB: Ganti PIN di bawah ini dengan 6 ANGKA (contoh: '482915').
+// Hindari PIN mudah ditebak seperti 123456, 000000, atau tanggal lahir.
+// PIN yang sama dimasukkan di aplikasi kasir.
 // Setelah mengganti PIN: Deploy > Kelola deployment > Edit > Versi baru.
 // ================================================================
-var PIN_RAHASIA = 'GANTI-PIN-INI';
+var PIN_RAHASIA = '000000';
+
+// Pengaman tebak PIN: 10x salah dalam 15 menit = akses dikunci 15 menit.
+var BATAS_SALAH = 10;
+var DURASI_KUNCI_DETIK = 900;
 
 function cekPin_(pin) {
-  if (!PIN_RAHASIA || PIN_RAHASIA === 'GANTI-PIN-INI' || PIN_RAHASIA.length < 6) return false;
-  return String(pin || '') === PIN_RAHASIA;
+  var cache = CacheService.getScriptCache();
+  if (cache.get('kunci_pin')) return 'TERKUNCI';
+  if (!/^[0-9]{6}$/.test(PIN_RAHASIA) || PIN_RAHASIA === '000000') return 'PIN_SALAH';
+  if (String(pin || '') === PIN_RAHASIA) return 'OK';
+  var gagal = Number(cache.get('gagal_pin') || 0) + 1;
+  cache.put('gagal_pin', String(gagal), DURASI_KUNCI_DETIK);
+  if (gagal >= BATAS_SALAH) {
+    cache.put('kunci_pin', '1', DURASI_KUNCI_DETIK);
+    cache.remove('gagal_pin');
+  }
+  return 'PIN_SALAH';
 }
 
 // Akses langsung lewat browser tidak menampilkan data apa pun.
@@ -2677,9 +2695,10 @@ function doPost(e) {
   } catch (err) {
     return jsonOut_({ ok: false, error: 'PERMINTAAN_TIDAK_VALID' });
   }
-  if (!cekPin_(payload.pin)) {
+  var hasilPin = cekPin_(payload.pin);
+  if (hasilPin !== 'OK') {
     Utilities.sleep(1500);
-    return jsonOut_({ ok: false, error: 'PIN_SALAH' });
+    return jsonOut_({ ok: false, error: hasilPin });
   }
   var toko = String(payload.toko || 'kdkmp-salamnunggal').replace(/[^a-z0-9_-]/g, '-');
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -2812,9 +2831,14 @@ function jsonOut_(obj) {
       return data;
     }
 
-    function handlePinRejected() {
+    function handlePinRejected(reason) {
       stopCloudRealtimeListener();
       cloudConnected = false;
+      if (reason === 'TERKUNCI') {
+        updateCloudBadgeUI('error', 'Terkunci');
+        showToast('⛔ Terlalu banyak PIN salah. Akses database dikunci 15 menit, coba lagi nanti.', 'error');
+        return;
+      }
       updateCloudBadgeUI('error', 'PIN Salah');
       showToast('🔒 PIN database salah atau belum diisi. Masukkan PIN yang benar di menu Cloud.', 'error');
       if (!document.getElementById('cloudModal').classList.contains('open')) openCloudModal();
@@ -2888,7 +2912,7 @@ function jsonOut_(obj) {
           savePendingOps();
           updateCloudBadgeUI('online', 'Sheets Aktif');
         } catch (err) {
-          if (err.message === 'PIN_SALAH') { handlePinRejected(); return; }
+          if (err.message === 'PIN_SALAH' || err.message === 'TERKUNCI') { handlePinRejected(err.message); return; }
           console.warn('GAS push deferred:', err);
           updateCloudBadgeUI('error', `Tertunda (${pendingSyncOps.length})`);
         }
@@ -2948,7 +2972,7 @@ function jsonOut_(obj) {
         return true;
       } catch (err) {
         console.error('Cloud fetch error:', err);
-        if (err.message === 'PIN_SALAH') { handlePinRejected(); return false; }
+        if (err.message === 'PIN_SALAH' || err.message === 'TERKUNCI') { handlePinRejected(err.message); return false; }
         cloudConnected = false;
         updateCloudBadgeUI('error', 'Cloud Offline');
         if (!silent) {
@@ -3123,8 +3147,8 @@ function jsonOut_(obj) {
         return;
       }
 
-      if (pin.length < 6) {
-        showToast('Masukkan PIN Database (minimal 6 karakter).', 'warn');
+      if (!/^\d{6}$/.test(pin)) {
+        showToast('PIN Database harus 6 angka.', 'warn');
         return;
       }
 
@@ -3180,7 +3204,7 @@ function jsonOut_(obj) {
         showToast(`⬆️ Berhasil mengirim ${citizens.length} warga & ${transactions.length} transaksi ke Cloud!`);
         pullFullCloudSnapshot(true);
       } catch (err) {
-        if (err.message === 'PIN_SALAH') { handlePinRejected(); return; }
+        if (err.message === 'PIN_SALAH' || err.message === 'TERKUNCI') { handlePinRejected(err.message); return; }
         showToast('Gagal mengirim data ke Cloud. Cek koneksi internet & pengaturan akses.', 'error');
       }
     }
