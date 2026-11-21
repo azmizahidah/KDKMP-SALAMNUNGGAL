@@ -2157,6 +2157,16 @@
           Status: Mode Lokal (data masih tersimpan di perangkat ini saja).
         </div>
 
+        <div style="background:#F0FDF4; border:1.5px solid #86EFAC; border-radius:9px; padding:10px; margin-bottom:12px; font-size:12px; color:#166534; line-height:1.5;">
+          <div style="font-weight:800; font-size:12.5px; margin-bottom:4px;">Langkah 1: Siapkan Google Sheets</div>
+          Buka Google Sheet → menu <strong>Ekstensi → Apps Script</strong> → hapus isi <code>Code.gs</code> → tempel kode dari tombol di bawah → ganti <code>PIN_RAHASIA</code> dengan 6 angka → Simpan → <strong>Deploy → Deployment baru → Aplikasi web</strong> (Akses: Siapa saja) → salin URL <code>/exec</code>.
+          <button type="button" class="btn btn-green btn-sm" style="width:100%; margin-top:8px;" onclick="copyAppsScriptTemplate()">
+            📋 Salin Kode Apps Script
+          </button>
+        </div>
+
+        <div style="font-weight:800; font-size:12.5px; color:#166534; margin-bottom:6px;">Langkah 2: Sambungkan aplikasi ini</div>
+
         <div class="form-group">
           <label class="form-label">
             <span>URL Web App Google Apps Script (Google Sheets) *</span>
