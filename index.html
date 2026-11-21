@@ -4581,29 +4581,165 @@ function simpanOps_(ss, toko, ops) {
   syncReadableSheets_(ss, dbSheet);
 }
 
+var KATEGORI_ = { minyak: ['Minyak', 'L'], gas: ['Gas', 'tabung'], beras: ['Beras', 'pack'] };
+
 function syncReadableSheets_(ss, dbSheet) {
   var rows = dbSheet.getDataRange().getValues();
-  var wRows = [['Nama Warga', 'No. NIK (16 Digit)', 'No. KK (16 Digit)', 'Status Data']];
-  var tRows = [['Tanggal', 'Jam', 'Nama Warga', 'No. NIK', 'No. KK', 'Komoditas', 'Jumlah']];
+  var citizens = [], txs = [];
   for (var i = 1; i < rows.length; i++) {
     var key = String(rows[i][0] || '');
     try {
       var obj = JSON.parse(rows[i][1]);
-      if (key.indexOf('citizens/') === 0) {
-        var st = (obj.nik && obj.kk) ? 'Lengkap' : (!obj.kk ? 'Kurang No. KK' : 'Kurang NIK');
-        wRows.push([obj.name || '', "'" + (obj.nik || ''), "'" + (obj.kk || ''), st]);
-      } else if (key.indexOf('transactions/') === 0) {
-        tRows.push([obj.date || '', obj.time || '', obj.name || '', "'" + (obj.nik || ''), "'" + (obj.kk || ''), obj.itemLabel || '', obj.qty || 0]);
-      }
+      if (key.indexOf('citizens/') === 0) citizens.push(obj);
+      else if (key.indexOf('transactions/') === 0) txs.push(obj);
     } catch (e) {}
   }
-  var sWarga = getOrCreateSheet_(ss, 'Data_Warga', wRows[0]);
-  sWarga.clearContents();
-  sWarga.getRange(1, 1, wRows.length, 4).setValues(wRows);
+  txs.sort(function (a, b) {
+    return String(b.date || '').localeCompare(String(a.date || '')) || String(b.time || '').localeCompare(String(a.time || ''));
+  });
 
-  var sTx = getOrCreateSheet_(ss, 'Riwayat_Transaksi', tRows[0]);
-  sTx.clearContents();
-  sTx.getRange(1, 1, tRows.length, 7).setValues(tRows);
+  var byId = {};
+  citizens.forEach(function (c) { byId[c.id] = c; });
+  var kkOf = function (t) { return t.kk || (byId[t.citizenId] && byId[t.citizenId].kk) || ''; };
+  var teks = function (v) { return v ? "'" + v : ''; };
+
+  // ---- Data_Warga (satu baris per orang) ----
+  var wRows = [['Nama Warga', 'No. NIK (16 Digit)', 'No. KK (16 Digit)', 'Status Data']];
+  citizens.forEach(function (c) {
+    var st = (c.nik && c.kk) ? 'Lengkap' : (!c.kk ? 'Kurang No. KK' : 'Kurang NIK');
+    wRows.push([c.name || '', teks(c.nik), teks(c.kk), st]);
+  });
+  tulisSheet_(ss, 'Data_Warga', wRows);
+
+  // ---- Riwayat_Transaksi (+ Kategori, Satuan, ID warga untuk rumus Detail_Warga) ----
+  var tRows = [['Tanggal', 'Jam', 'Nama Warga', 'No. NIK', 'No. KK', 'Komoditas', 'Jumlah', 'Kategori', 'Satuan', 'ID Warga']];
+  txs.forEach(function (t) {
+    var kat = KATEGORI_[t.item] || ['', ''];
+    tRows.push([t.date || '', t.time || '', t.name || '', teks(t.nik), teks(kkOf(t)), t.itemLabel || '', Number(t.qty || 0), kat[0], kat[1], t.citizenId || '']);
+  });
+  tulisSheet_(ss, 'Riwayat_Transaksi', tRows);
+
+  // ---- Rekap_Warga (total per kategori per orang) ----
+  var per = {};
+  txs.forEach(function (t) {
+    var id = t.citizenId || ('nik:' + (t.nik || ''));
+    if (!per[id]) per[id] = { minyak: 0, gas: 0, beras: 0, n: 0, last: '' };
+    var p = per[id];
+    if (p.hasOwnProperty(t.item)) p[t.item] += Number(t.qty || 0);
+    p.n += 1;
+    if (String(t.date || '') > p.last) p.last = String(t.date || '');
+  });
+  var rwRows = [['Nama Warga', 'No. NIK', 'No. KK', 'Minyak (L)', 'Gas (tabung)', 'Beras (pack)', 'Beras (kg)', 'Jumlah Transaksi', 'Transaksi Terakhir', 'Pilihan (Detail_Warga)', 'ID Warga']];
+  citizens.slice().sort(function (a, b) { return String(a.name || '').localeCompare(String(b.name || '')); }).forEach(function (c) {
+    var p = per[c.id] || { minyak: 0, gas: 0, beras: 0, n: 0, last: '' };
+    var label = (c.name || 'Tanpa nama') + ' (' + (c.nik ? 'NIK ' + c.nik : 'KK ' + (c.kk || '-')) + ')';
+    rwRows.push([c.name || '', teks(c.nik), teks(c.kk), p.minyak, p.gas, p.beras, p.beras * 5, p.n, p.last, label, c.id]);
+  });
+  tulisSheet_(ss, 'Rekap_Warga', rwRows);
+
+  // ---- Rekap_KK (total per kategori per keluarga) ----
+  var fam = {};
+  citizens.forEach(function (c) {
+    if (!c.kk) return;
+    if (!fam[c.kk]) fam[c.kk] = { names: [], minyak: 0, gas: 0, beras: 0, n: 0, last: '' };
+    fam[c.kk].names.push(c.name || '');
+  });
+  txs.forEach(function (t) {
+    var kk = kkOf(t);
+    if (!kk) return;
+    if (!fam[kk]) fam[kk] = { names: [t.name || ''], minyak: 0, gas: 0, beras: 0, n: 0, last: '' };
+    var f = fam[kk];
+    if (f.hasOwnProperty(t.item)) f[t.item] += Number(t.qty || 0);
+    f.n += 1;
+    if (String(t.date || '') > f.last) f.last = String(t.date || '');
+  });
+  var rkRows = [['No. KK', 'Anggota Keluarga', 'Jumlah Anggota', 'Minyak (L)', 'Gas (tabung)', 'Beras (pack)', 'Beras (kg)', 'Jumlah Transaksi', 'Transaksi Terakhir']];
+  Object.keys(fam).sort().forEach(function (kk) {
+    var f = fam[kk];
+    rkRows.push([teks(kk), f.names.join(', '), f.names.length, f.minyak, f.gas, f.beras, f.beras * 5, f.n, f.last]);
+  });
+  tulisSheet_(ss, 'Rekap_KK', rkRows);
+
+  siapkanDetailWarga_(ss);
+}
+
+function tulisSheet_(ss, name, data) {
+  var sh = ss.getSheetByName(name) || ss.insertSheet(name);
+  sh.clearContents();
+  sh.getRange(1, 1, data.length, data[0].length).setValues(data);
+  sh.setFrozenRows(1);
+  sh.getRange(1, 1, 1, data[0].length).setFontWeight('bold');
+  return sh;
+}
+
+// Lembar interaktif: pilih warga di B3 → riwayat & total per kategori tampil otomatis.
+var VERSI_DETAIL_ = 'detail-v1';
+
+function siapkanDetailWarga_(ss) {
+  var sh = ss.getSheetByName('Detail_Warga');
+  if (sh && sh.getRange('Z1').getValue() === VERSI_DETAIL_) {
+    perbaruiPilihanDetail_(ss, sh);
+    return;
+  }
+  var pilihanLama = sh ? sh.getRange('B3').getValue() : '';
+  var cakupanLama = sh ? sh.getRange('B4').getValue() : '';
+  if (!sh) sh = ss.insertSheet('Detail_Warga');
+  sh.clear();
+  sh.getRange('Z1').setValue(VERSI_DETAIL_);
+  sh.getRange('A1').setValue('DETAIL WARGA — riwayat transaksi & total per kategori').setFontWeight('bold').setFontSize(13);
+  sh.getRange('A3:A4').setValues([['Pilih warga'], ['Cakupan']]).setFontWeight('bold');
+  sh.getRange('B3').setValue(pilihanLama || '');
+  sh.getRange('B4').setValue(cakupanLama || 'Orang ini');
+  sh.getRange('B4').setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(['Orang ini', 'Seluruh KK'], true).build());
+  sh.getRange('B3:B4').setBackground('#FFF7E6');
+
+  var cari = function (col) { return '=IFERROR(INDEX(Rekap_Warga!' + col + ':' + col + ', MATCH($B$3, Rekap_Warga!J:J, 0)), "")'; };
+  sh.getRange('A6:A9').setValues([['Nama'], ['No. NIK'], ['No. KK'], ['ID Warga']]).setFontWeight('bold');
+  sh.getRange('B6').setFormula(cari('A'));
+  sh.getRange('B7').setFormula(cari('B'));
+  sh.getRange('B8').setFormula(cari('C'));
+  sh.getRange('B9').setFormula(cari('K'));
+  sh.getRange('A9:B9').setFontColor('#9CA3AF');
+
+  // Masker baris: Seluruh KK (jika KK ada) → cocokkan No. KK; selain itu → cocokkan ID warga.
+  var R = 'Riwayat_Transaksi!';
+  var pakaiKK = '(($B$4="Seluruh KK")*($B$8<>""))';
+  var masker = '(' + R + 'A2:A<>"")*(' + pakaiKK + '*(' + R + 'E2:E=$B$8)+(1-' + pakaiKK + ')*(' + R + 'J2:J=$B$9))';
+
+  sh.getRange('A11:C11').setValues([['Kategori', 'Total', 'Satuan']]).setFontWeight('bold').setBackground('#F3F4F6');
+  sh.getRange('A12:A14').setValues([['Minyak'], ['Gas'], ['Beras']]);
+  sh.getRange('C12:C14').setValues([['L'], ['tabung'], ['pack']]);
+  for (var r = 12; r <= 14; r++) {
+    sh.getRange('B' + r).setFormula('=IF($B$9="", 0, SUMPRODUCT(' + R + 'G2:G*(' + R + 'H2:H=A' + r + ')*' + masker + '))');
+  }
+  sh.getRange('A15:C16').setValues([['Beras (kg)', '', 'kg'], ['Jumlah transaksi', '', 'kali']]);
+  sh.getRange('B15').setFormula('=B14*5');
+  sh.getRange('B16').setFormula('=IF($B$9="", 0, SUMPRODUCT(' + masker + '))');
+
+  sh.getRange('A18').setValue('Riwayat transaksi (terbaru di atas)').setFontWeight('bold');
+  sh.getRange('A19:F19').setValues([['Tanggal', 'Jam', 'Nama', 'Kategori', 'Satuan', 'Jumlah']]).setFontWeight('bold').setBackground('#F3F4F6');
+  sh.getRange('A20').setFormula('=IF($B$9="", "Pilih warga di sel B3", IFERROR(FILTER({' + R + 'A2:C, ' + R + 'H2:I, ' + R + 'G2:G}, ' + masker + '), "Belum ada transaksi"))');
+
+  sh.setColumnWidth(1, 150);
+  sh.setColumnWidth(2, 260);
+  sh.setFrozenRows(4);
+  perbaruiPilihanDetail_(ss, sh);
+}
+
+function perbaruiPilihanDetail_(ss, sh) {
+  var rekap = ss.getSheetByName('Rekap_Warga');
+  if (!rekap) return;
+  var rule = SpreadsheetApp.newDataValidation().requireValueInRange(rekap.getRange('J2:J'), true).setAllowInvalid(false).build();
+  sh.getRange('B3').setDataValidation(rule);
+}
+
+// Jalankan manual dari editor bila ingin menyusun ulang Rekap & Detail sekarang juga.
+function perbaruiRekap() {
+  var ss = ambilSpreadsheet_();
+  var sheets = ss.getSheets().filter(function (s) { return s.getName().indexOf('RAW_DB_') === 0; });
+  if (!sheets.length) { Logger.log('Belum ada data (sheet RAW_DB_...)'); return; }
+  syncReadableSheets_(ss, sheets[0]);
+  Logger.log('Rekap_Warga, Rekap_KK & Detail_Warga diperbarui: ' + ss.getUrl());
 }
 
 function getOrCreateSheet_(ss, name, headers) {
