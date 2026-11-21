@@ -5484,7 +5484,11 @@ function jsonOut_(obj) {
 
       if (secondDigits.length === 16) {
         const existingOther = findCitizenBy16Digit(secondDigits);
-        if (existingOther) {
+        // Anggota keluarga lain (NIK berbeda, KK sama) disimpan sebagai profil sendiri
+        // dengan namanya sendiri. Kuota tetap dihitung bersama per No. KK.
+        const isOtherFamilyMember = existingOther && regMode === 'nik' &&
+          existingOther.kk === kk && existingOther.nik && existingOther.nik !== nik;
+        if (existingOther && !isOtherFamilyMember) {
           if (nik && !existingOther.nik) existingOther.nik = nik;
           if (kk && !existingOther.kk) existingOther.kk = kk;
           saveCitizensLocal();
@@ -5509,7 +5513,10 @@ function jsonOut_(obj) {
       queueCloudSync('put', `citizens/${newCitizen.id}`, newCitizen);
       clearDraftRegForm();
       selectCitizen(newCitizen.id);
-      showToast(`Warga "${name}" terdaftar! Silakan pilih komoditas.`);
+      const familyCount = newCitizen.kk ? citizens.filter(c => c.kk === newCitizen.kk).length : 1;
+      showToast(familyCount > 1
+        ? `Warga "${name}" terdaftar sebagai anggota KK yang sama (${familyCount} orang). Kuota dihitung bersama per KK.`
+        : `Warga "${name}" terdaftar! Silakan pilih komoditas.`);
     }
 
     function completeCitizenId(citizenId, fieldType) {
